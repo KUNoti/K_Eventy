@@ -6,6 +6,14 @@ PODS:
   - Flutter (1.0.0)
   - geolocator_apple (1.2.0):
     - Flutter
+  - google_maps_flutter_ios (0.0.1):
+    - Flutter
+    - GoogleMaps (< 9.0)
+  - GoogleMaps (6.2.1):
+    - GoogleMaps/Maps (= 6.2.1)
+  - GoogleMaps/Base (6.2.1)
+  - GoogleMaps/Maps (6.2.1):
+    - GoogleMaps/Base
   - native_device_orientation (0.0.1):
     - Flutter
   - permission_handler_apple (9.1.1):
@@ -18,9 +26,14 @@ DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
   - Flutter (from `Flutter`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
+  - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
   - native_device_orientation (from `.symlinks/plugins/native_device_orientation/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - sensors_plus (from `.symlinks/plugins/sensors_plus/ios`)
+
+SPEC REPOS:
+  trunk:
+    - GoogleMaps
 
 EXTERNAL SOURCES:
   ar_location_view:
@@ -31,6 +44,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   geolocator_apple:
     :path: ".symlinks/plugins/geolocator_apple/ios"
+  google_maps_flutter_ios:
+    :path: ".symlinks/plugins/google_maps_flutter_ios/ios"
   native_device_orientation:
     :path: ".symlinks/plugins/native_device_orientation/ios"
   permission_handler_apple:
@@ -40,13 +55,15 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   ar_location_view: 135d2ac125894b8d2567c3574600912021b2a214
-  camera_avfoundation: 8b8d780bcfb6a4a02b0fbe2b4bd17b5b71946e68
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  camera_avfoundation: 759172d1a77ae7be0de08fc104cfb79738b8a59e
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   geolocator_apple: 9157311f654584b9bb72686c55fc02a97b73f461
+  google_maps_flutter_ios: f135b968a67c05679e0a53538e900b5c174b0d99
+  GoogleMaps: 20d7b12be49a14287f797e88e0e31bc4156aaeb4
   native_device_orientation: 3b4cfc9565a7b879cc4fde282b3e27745e852d0d
   permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
   sensors_plus: 4ee32bc7d61a055f27f88d3215ad6b6fb96a2b8e
 
-PODFILE CHECKSUM: d72acd9b90be2e53224bd7bfc1fa43b9fa4ce406
+PODFILE CHECKSUM: 359c816c4e1211693e59769e776ee99f46230b1e
 
 COCOAPODS: 1.15.2
