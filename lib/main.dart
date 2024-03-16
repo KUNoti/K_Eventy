@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:k_eventy/pages/auth/login_page.dart';
+import 'package:k_eventy/ui_design.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: UIDesign(),
     );
   }
 }

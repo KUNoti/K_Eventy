@@ -24,7 +24,7 @@ class LoginPage extends StatelessWidget {
   void navigateToARPage(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const ARPage()),
+      MaterialPageRoute(builder: (context) => const ARSection()),
     );
   }
 
