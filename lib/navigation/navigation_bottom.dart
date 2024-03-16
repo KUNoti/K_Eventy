@@ -41,7 +41,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
           HomePage(),
           SearchPage(),
           MyEventsPage(),
-          UserSettingPage(),
+          UserSettingsPage(),
         ],
       ),
       bottomNavigationBar: NavigationBar(

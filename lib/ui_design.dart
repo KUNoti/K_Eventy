@@ -108,7 +108,7 @@ class _UIDesignState extends State<UIDesign> {
   void navigateToUserSetting(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const UserSettingPage()),
+      MaterialPageRoute(builder: (context) => UserSettingsPage()),
     );
   }
 

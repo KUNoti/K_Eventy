@@ -1,15 +1,98 @@
 import 'package:flutter/material.dart';
 
-class UserSettingPage extends StatefulWidget {
-  const UserSettingPage({super.key});
+class UserSettingsPage extends StatefulWidget {
+  const UserSettingsPage({Key? key}) : super(key: key);
 
   @override
-  State<UserSettingPage> createState() => _UserSettingPageState();
+  _UserSettingsPageState createState() => _UserSettingsPageState();
 }
 
-class _UserSettingPageState extends State<UserSettingPage> {
+class _UserSettingsPageState extends State<UserSettingsPage> {
+  String _username = 'John Doe';
+  String _email = 'johndoe@example.com';
+  String _password = 'password123';
+
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('User Settings'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              Image.network(
+                'https://via.placeholder.com/150', // Placeholder image URL
+                height: 150,
+                width: 150,
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                initialValue: _username,
+                decoration: InputDecoration(labelText: 'Username'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a username';
+                  }
+                  return null;
+                },
+                onSaved: (newValue) {
+                  _username = newValue!;
+                },
+              ),
+              TextFormField(
+                initialValue: _email,
+                decoration: InputDecoration(labelText: 'Email'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter an email';
+                  }
+                  return null;
+                },
+                onSaved: (newValue) {
+                  _email = newValue!;
+                },
+              ),
+              TextFormField(
+                initialValue: _password,
+                decoration: InputDecoration(labelText: 'Password'),
+                obscureText: true, // Password is obscured
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a password';
+                  }
+                  return null;
+                },
+                onSaved: (newValue) {
+                  _password = newValue!;
+                },
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _saveForm,
+                child: Text('Save'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _saveForm() {
+    final form = _formKey.currentState;
+    if (form != null && form.validate()) {
+      form.save();
+      // Perform saving logic here, such as updating user data in a database
+      // You can also show a confirmation message to the user
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Settings saved')),
+      );
+    }
   }
 }
