@@ -8,12 +8,16 @@ import 'package:k_eventy/pages/home/ar_page.dart';
 import 'package:k_eventy/pages/home/ar_setting.dart';
 import 'package:k_eventy/pages/home/map_section.dart';
 import 'package:k_eventy/pages/notification/notification_page.dart';
-import 'package:k_eventy/pages/search/search_page.dart';
 import 'package:k_eventy/pages/user/user_setting.dart';
 
-class UIDesign extends StatelessWidget {
-  UIDesign({super.key});
+class UIDesign extends StatefulWidget {
+  const UIDesign({super.key});
 
+  @override
+  State<UIDesign> createState() => _UIDesignState();
+}
+
+class _UIDesignState extends State<UIDesign> {
   List<Event> mockEvents = [
     Event(
       id: 1,
