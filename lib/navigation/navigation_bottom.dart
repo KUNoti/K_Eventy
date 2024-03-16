@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:k_eventy/pages/home/home_page.dart';
+import 'package:k_eventy/pages/myevent/myevent_page.dart';
 import 'package:k_eventy/pages/search/search_page.dart';
 import 'package:k_eventy/pages/user/user_setting.dart';
 
@@ -39,12 +40,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
         children: <Widget>[
           HomePage(),
           SearchPage(),
-          Container(
-            color: Colors.blue, // Example page color
-            child: Center(
-              child: Text('My Events Page'),
-            ),
-          ),
+          MyEventsPage(),
           UserSettingPage(),
         ],
       ),
