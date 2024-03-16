@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:k_eventy/components/event_card.dart';
+import 'package:k_eventy/pages/event/event_page.dart';
 import 'package:k_eventy/event.dart';
 import 'package:k_eventy/navigation/navigation_bottom.dart';
 import 'package:k_eventy/pages/auth/login_page.dart';
@@ -77,7 +77,7 @@ class _UIDesignState extends State<UIDesign> {
   void navigateToARPage(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const ARPage()),
+      MaterialPageRoute(builder: (context) => const ARSection()),
     );
   }
 
@@ -92,7 +92,7 @@ class _UIDesignState extends State<UIDesign> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => EventCard(
+          builder: (context) => EventPage(
                 event: mockEvents.first,
               )),
     );

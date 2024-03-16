@@ -5,14 +5,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:k_eventy/pages/home/annotation_view.dart';
 import 'package:k_eventy/pages/home/annotations.dart';
 
-class ARPage extends StatefulWidget {
-  const ARPage({super.key});
+class ARSection extends StatefulWidget {
+  const ARSection({super.key});
 
   @override
-  State<ARPage> createState() => _ARPageState();
+  State<ARSection> createState() => _ARSectionState();
 }
 
-class _ARPageState extends State<ARPage> {
+class _ARSectionState extends State<ARSection> {
   List<Annotation> annotations = [];
 
   @override
