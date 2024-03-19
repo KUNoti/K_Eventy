@@ -15,6 +15,15 @@ class _SelectTagState extends State<SelectTag> {
   @override
   Widget build(BuildContext context) {
     return SegmentedButton<Tag>(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.selected)) {
+            return Colors.blue; // Change to whatever color you want
+          }
+          return Colors.white; // Default color
+        }),
+        elevation: MaterialStateProperty.all(3),
+      ),
       emptySelectionAllowed: true,
       segments: const <ButtonSegment<Tag>>[
         ButtonSegment<Tag>(

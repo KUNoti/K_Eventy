@@ -1,4 +1,6 @@
-class Event {
+import 'package:k_eventy/features/event/domain/entities/event.dart';
+
+class EventModel {
   final int id;
   final double latitude;
   final double longitude;
@@ -11,7 +13,7 @@ class Event {
   final DateTime startDateTime;
   final DateTime endDateTime;
 
-  Event({
+  EventModel({
     required this.id,
     required this.latitude,
     required this.longitude,
@@ -25,8 +27,8 @@ class Event {
     required this.endDateTime,
   });
 
-  factory Event.fromJson(Map<String, dynamic> json) {
-    return Event(
+  factory EventModel.fromJson(Map<String, dynamic> json) {
+    return EventModel(
       id: json['id'],
       latitude: json['latitude'],
       longitude: json['longitude'],

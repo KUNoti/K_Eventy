@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:k_eventy/event.dart';
-import 'package:k_eventy/pages/event/event_page.dart';
+import 'package:k_eventy/features/event/data/models/event_model.dart';
+import 'package:k_eventy/features/event/presentation/pages/event_page.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Event mockEvent = Event(
+    EventModel mockEvent = EventModel(
       id: 3,
       latitude: 34.0522,
       longitude: -118.2437,
@@ -34,6 +34,7 @@ class EventCard extends StatelessWidget {
         );
       },
       child: Card(
+        color: Colors.white,
         elevation: 3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),

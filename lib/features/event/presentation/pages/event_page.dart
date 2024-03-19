@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:k_eventy/event.dart';
+import 'package:k_eventy/features/event/data/models/event_model.dart';
 
 class EventPage extends StatelessWidget {
-  final Event event;
+  final EventModel event;
 
   const EventPage({Key? key, required this.event}) : super(key: key);
 

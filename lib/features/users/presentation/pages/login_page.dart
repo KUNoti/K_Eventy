@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:k_eventy/components/my_button.dart';
 import 'package:k_eventy/components/my_textfield.dart';
-import 'package:k_eventy/pages/auth/register_page.dart';
+import 'package:k_eventy/features/users/presentation/pages/register_page.dart';
 import 'package:k_eventy/pages/home/ar_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -18,13 +18,6 @@ class LoginPage extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const RegisterPage()),
-    );
-  }
-
-  void navigateToARPage(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ARSection()),
     );
   }
 
@@ -115,7 +108,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   GestureDetector(
-                    onTap: () => navigateToARPage(context),
+                    onTap: () => navigateToRegisterPage(context),
                     child: const Text(
                       'Register now',
                       style: TextStyle(

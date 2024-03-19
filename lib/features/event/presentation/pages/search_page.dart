@@ -53,7 +53,7 @@ class _SearchPageState extends State<SearchPage> {
 
             // SelectTag
             const SizedBox(height: 8),
-            Padding(
+            const Padding(
               padding: const EdgeInsets.all(8),
               child: SelectTag(),
             ),

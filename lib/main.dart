@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:k_eventy/ui_design.dart';
+import 'package:k_eventy/features/users/presentation/pages/login_page.dart';
+import 'package:k_eventy/navigation/navigation_bottom.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +24,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: UIDesign(),
+      home: NavigationBottom(),
     );
   }
 }
