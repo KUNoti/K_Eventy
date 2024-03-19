@@ -52,7 +52,8 @@ class FollowingEvents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Dummy list of following events
-    List<String> followingEvents = List.generate(5, (index) => 'Following Event $index');
+    List<String> followingEvents =
+        List.generate(5, (index) => 'Following Event $index');
 
     return SizedBox(
       height: 200, // Adjust the height as needed
@@ -73,7 +74,8 @@ class CreatedEvents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Dummy list of created events
-    List<String> createdEvents = List.generate(5, (index) => 'Created Event $index');
+    List<String> createdEvents =
+        List.generate(5, (index) => 'Created Event $index');
 
     return SizedBox(
       height: 200, // Adjust the height as needed
@@ -132,7 +134,8 @@ class NotificationsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Dummy list of notifications
-    List<String> notifications = List.generate(10, (index) => 'Notification $index');
+    List<String> notifications =
+        List.generate(10, (index) => 'Notification $index');
 
     return SizedBox(
       height: 300, // Adjust the height as needed

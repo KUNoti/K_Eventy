@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:k_eventy/pages/home/home_page.dart';
-import 'package:k_eventy/pages/myevent/myevent_page.dart';
-import 'package:k_eventy/pages/search/search_page.dart';
-import 'package:k_eventy/pages/user/user_setting.dart';
+import 'package:k_eventy/features/event/presentation/pages/myevent_page.dart';
+import 'package:k_eventy/features/event/presentation/pages/search_page.dart';
+import 'package:k_eventy/features/users/presentation/pages/user_setting.dart';
 
 class NavigationBottom extends StatefulWidget {
   const NavigationBottom({Key? key}) : super(key: key);
@@ -30,6 +30,16 @@ class _NavigationBottomState extends State<NavigationBottom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Container(
+        width: 50,
+        height: 50,
+        child: FloatingActionButton(
+            onPressed: () {},
+            tooltip: 'Add New Item',
+            elevation: 3,
+            child: const Icon(Icons.add)),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: PageView(
         controller: _pageController,
         onPageChanged: (int index) {
