@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:k_eventy/features/event/presentation/widgets/annotations.dart';
 
-import 'annotations.dart';
 
 class AnnotationView extends StatelessWidget {
   const AnnotationView({

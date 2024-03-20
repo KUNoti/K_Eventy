@@ -1,37 +1,37 @@
 import 'package:k_eventy/features/event/domain/entities/event.dart';
 
-class EventModel {
-  final int id;
-  final double latitude;
-  final double longitude;
-  final String title;
-  final String image;
-  final String creator;
-  final String detail;
-  final String tag;
-  final String locationName;
-  final DateTime startDateTime;
-  final DateTime endDateTime;
-
+class EventModel extends Event {
   EventModel({
-    required this.id,
-    required this.latitude,
-    required this.longitude,
-    required this.title,
-    required this.image,
-    required this.creator,
-    required this.detail,
-    required this.tag,
-    required this.locationName,
-    required this.startDateTime,
-    required this.endDateTime,
-  });
+    required int id,
+    required double latitude,
+    required double longitude,
+    required String title,
+    required String image,
+    required String creator,
+    required String detail,
+    required String tag,
+    required String locationName,
+    required DateTime startDateTime,
+    required DateTime endDateTime,
+  }) : super(
+    id: id,
+    latitude: latitude,
+    longitude: longitude,
+    title: title,
+    image: image,
+    creator: creator,
+    detail: detail,
+    tag: tag,
+    locationName: locationName,
+    startDateTime: startDateTime,
+    endDateTime: endDateTime,
+  );
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
     return EventModel(
       id: json['id'],
-      latitude: json['latitude'],
-      longitude: json['longitude'],
+      latitude: json['latitude'].toDouble(),
+      longitude: json['longitude'].toDouble(),
       title: json['title'],
       image: json['image'],
       creator: json['creator'],
@@ -40,6 +40,22 @@ class EventModel {
       locationName: json['locationName'],
       startDateTime: DateTime.parse(json['startDateTime']),
       endDateTime: DateTime.parse(json['endDateTime']),
+    );
+  }
+
+  Event toDomain() {
+    return Event(
+      id: id,
+      latitude: latitude,
+      longitude: longitude,
+      title: title,
+      image: image,
+      creator: creator,
+      detail: detail,
+      tag: tag,
+      locationName: locationName,
+      startDateTime: startDateTime,
+      endDateTime: endDateTime,
     );
   }
 }
