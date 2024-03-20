@@ -1,9 +1,9 @@
-import 'package:ar_location_view/ar_location_widget.dart';
+import 'package:ar_location_view/ar_location_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:geolocator/geolocator.dart';
-import 'package:k_eventy/pages/home/annotation_view.dart';
-import 'package:k_eventy/pages/home/annotations.dart';
+import 'package:k_eventy/features/event/presentation/widgets/annotation_view.dart';
+import 'package:k_eventy/features/event/presentation/widgets/annotations.dart';
 
 class ARSection extends StatefulWidget {
   const ARSection({super.key});
@@ -21,17 +21,18 @@ class _ARSectionState extends State<ARSection> {
       body: ArLocationWidget(
         annotations: annotations,
         showDebugInfoSensor: false,
-        annotationViewBuilder: (context, annotation) {
-          return AnnotationView(
-            key: ValueKey(annotation.uid),
-            annotation: annotation as Annotation,
-          );
-        },
+
         onLocationChange: (Position position) {
           Future.delayed(const Duration(seconds: 5), () {
             annotations = fakeAnnotation(position: position, numberMaxPoi: 50);
             setState(() {});
           });
+        },
+        annotationViewBuilder: (context, annotation) {
+          return AnnotationView(
+            key: ValueKey(annotation.uid),
+            annotation: annotation as Annotation,
+          );
         },
       ),
     );

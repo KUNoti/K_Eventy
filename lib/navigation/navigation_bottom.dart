@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:k_eventy/pages/home/home_page.dart';
+import 'package:k_eventy/features/event/presentation/pages/home_page.dart';
 import 'package:k_eventy/features/event/presentation/pages/myevent_page.dart';
 import 'package:k_eventy/features/event/presentation/pages/search_page.dart';
+import 'package:k_eventy/features/event/presentation/widgets/create_event_dialog.dart';
 import 'package:k_eventy/features/users/presentation/pages/user_setting.dart';
 
 class NavigationBottom extends StatefulWidget {
@@ -27,17 +28,26 @@ class _NavigationBottomState extends State<NavigationBottom> {
     super.dispose();
   }
 
+  Future openDialog(BuildContext context) => showDialog(
+    context: context,
+    builder: (context) => const CreateEventDialog(),
+  );
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Container(
+      floatingActionButton: SizedBox(
         width: 50,
         height: 50,
         child: FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              openDialog(context);
+            },
             tooltip: 'Add New Item',
             elevation: 3,
-            child: const Icon(Icons.add)),
+            child: const Icon(Icons.add)
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: PageView(
@@ -47,7 +57,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
             currentPageIndex = index;
           });
         },
-        children: <Widget>[
+        children: const <Widget>[
           HomePage(),
           SearchPage(),
           MyEventsPage(),
@@ -61,7 +71,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
             currentPageIndex = index;
             _pageController.animateToPage(
               index,
-              duration: Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 300),
               curve: Curves.ease,
             );
           });
@@ -149,10 +159,10 @@ class NavigationDestination extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         selectedIcon,
-        SizedBox(height: 2),
+        const SizedBox(height: 2),
         Text(
           label,
-          style: TextStyle(fontSize: 12),
+          style: const TextStyle(fontSize: 12),
         ),
       ],
     );

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:k_eventy/components/my_button.dart';
 import 'package:k_eventy/components/my_textfield.dart';
 import 'package:k_eventy/features/users/presentation/pages/register_page.dart';
-import 'package:k_eventy/pages/home/ar_page.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});

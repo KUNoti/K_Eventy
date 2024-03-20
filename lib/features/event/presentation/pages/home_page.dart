@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:k_eventy/pages/home/map_section.dart';
+import 'package:k_eventy/features/event/presentation/widgets/map_section.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Expanded(
-            flex: 2,
+            flex: 0,
             child: Container(
               color: Colors.blue,
               child: const Center(
@@ -33,7 +33,8 @@ class _HomePageState extends State<HomePage> {
           // Map Section 1/3
           const Expanded(
             flex: 1,
-            child: MapSection()
+            // child: MapSection()
+            child: Placeholder(),
           ),
         ],
       ),
