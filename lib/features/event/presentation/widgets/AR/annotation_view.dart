@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:k_eventy/features/event/presentation/widgets/annotations.dart';
-
+import 'package:k_eventy/features/event/presentation/widgets/AR/annotations.dart';
 
 class AnnotationView extends StatelessWidget {
   const AnnotationView({
@@ -59,18 +58,21 @@ class AnnotationView extends StatelessWidget {
     IconData iconData = Icons.ac_unit_outlined;
     Color color = Colors.teal;
     switch (type) {
-      case AnnotationType.pharmacy:
-        iconData = Icons.local_pharmacy_outlined;
+      case AnnotationType.KU:
+        iconData = Icons.cast_for_education;
         color = Colors.red;
         break;
-      case AnnotationType.hotel:
-        iconData = Icons.hotel_outlined;
+      case AnnotationType.Festival:
+        iconData = Icons.festival;
         color = Colors.green;
         break;
-      case AnnotationType.library:
-        iconData = Icons.library_add_outlined;
+      case AnnotationType.Music:
+        iconData = Icons.music_note;
         color = Colors.blue;
         break;
+      case AnnotationType.Sport:
+        iconData = Icons.sports_basketball;
+        color = Colors.blue;
     }
     return Icon(
       iconData,

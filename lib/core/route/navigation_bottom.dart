@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:k_eventy/features/event/presentation/pages/home_page.dart';
 import 'package:k_eventy/features/event/presentation/pages/myevent_page.dart';
 import 'package:k_eventy/features/event/presentation/pages/search_page.dart';
-import 'package:k_eventy/features/event/presentation/widgets/create_event_dialog.dart';
+import 'package:k_eventy/features/event/presentation/widgets/event/create_event_dialog.dart';
 import 'package:k_eventy/features/users/presentation/pages/user_setting.dart';
 
 class NavigationBottom extends StatefulWidget {
