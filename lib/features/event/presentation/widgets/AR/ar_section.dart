@@ -2,8 +2,8 @@ import 'package:ar_location_view/ar_location_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:geolocator/geolocator.dart';
-import 'package:k_eventy/features/event/presentation/widgets/annotation_view.dart';
-import 'package:k_eventy/features/event/presentation/widgets/annotations.dart';
+import 'package:k_eventy/features/event/presentation/widgets/AR/annotation_view.dart';
+import 'package:k_eventy/features/event/presentation/widgets/AR/annotations.dart';
 
 class ARSection extends StatefulWidget {
   const ARSection({super.key});

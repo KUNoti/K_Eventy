@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:k_eventy/features/event/presentation/widgets/event/created_events_list.dart';
+import 'package:k_eventy/features/event/presentation/widgets/event/follow_events_list.dart';
+import 'package:k_eventy/features/event/presentation/widgets/event/notification_list.dart';
 
 class MyEventsPage extends StatelessWidget {
   const MyEventsPage({Key? key}) : super(key: key);
@@ -7,120 +10,42 @@ class MyEventsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Events'),
+        title: const Text('My Events'),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Following',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              SizedBox(height: 8),
-              FollowingEvents(), // Display Following events
-
-              SizedBox(height: 16),
-
-              Text(
-                'Created Events',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              SizedBox(height: 8),
-              CreatedEvents(), // Display Created events
-
-              SizedBox(height: 16),
-              Text(
-                'Notifications',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              SizedBox(height: 8),
-              NotificationsList(), // Display Notifications
-            ],
-          ),
-        ),
-      ),
+      body: _buildBody(context)
     );
   }
-}
 
-class FollowingEvents extends StatelessWidget {
-  const FollowingEvents({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // Dummy list of following events
-    List<String> followingEvents =
-        List.generate(5, (index) => 'Following Event $index');
-
-    return SizedBox(
-      height: 200, // Adjust the height as needed
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: followingEvents.length,
-        itemBuilder: (context, index) {
-          return EventCard(eventName: followingEvents[index]);
-        },
-      ),
-    );
-  }
-}
-
-class CreatedEvents extends StatelessWidget {
-  const CreatedEvents({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // Dummy list of created events
-    List<String> createdEvents =
-        List.generate(5, (index) => 'Created Event $index');
-
-    return SizedBox(
-      height: 200, // Adjust the height as needed
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: createdEvents.length,
-        itemBuilder: (context, index) {
-          return EventCard(eventName: createdEvents[index]);
-        },
-      ),
-    );
-  }
-}
-
-class EventCard extends StatelessWidget {
-  final String eventName;
-
-  const EventCard({Key? key, required this.eventName}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: 8),
-      child: Container(
-        width: 150, // Adjust the width as needed
-        padding: EdgeInsets.all(8),
+  Widget _buildBody(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              eventName,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              'Following',
+              style: Theme.of(context).textTheme.headline6,
             ),
-            SizedBox(height: 8),
-            Expanded(
-              child: Container(
-                color: Colors.grey[300], // Placeholder for event details
-                child: Center(
-                  child: Text(
-                    'Event details',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ),
-              ),
+            const SizedBox(height: 8),
+            const FollowingEventsList(),
+
+            const SizedBox(height: 16),
+
+            Text(
+              'Created Events',
+              style: Theme.of(context).textTheme.headline6,
             ),
+            const SizedBox(height: 8),
+            const CreatedEventsList(),
+
+            const SizedBox(height: 16),
+            Text(
+              'Notifications',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            const SizedBox(height: 8),
+            const NotificationsList(),
           ],
         ),
       ),
@@ -128,25 +53,8 @@ class EventCard extends StatelessWidget {
   }
 }
 
-class NotificationsList extends StatelessWidget {
-  const NotificationsList({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    // Dummy list of notifications
-    List<String> notifications =
-        List.generate(10, (index) => 'Notification $index');
 
-    return SizedBox(
-      height: 300, // Adjust the height as needed
-      child: ListView.builder(
-        itemCount: notifications.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(notifications[index]),
-          );
-        },
-      ),
-    );
-  }
-}
+
+
+

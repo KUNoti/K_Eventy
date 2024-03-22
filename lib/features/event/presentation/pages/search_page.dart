@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:k_eventy/components/event_card.dart';
-import 'package:k_eventy/components/select_tag.dart';
+import 'package:k_eventy/features/event/presentation/widgets/common/select_tag.dart';
+import 'package:k_eventy/features/event/presentation/widgets/event/event_card.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -20,69 +20,74 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         title: const Text('Search'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // SearchBar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: SearchBar(
-                controller: _searchController,
-                onTap: () {
-                  // Open search view
-                  setState(() {
-                    _searchResults.clear();
-                  });
-                },
-                onChanged: (value) {
-                  // Handle search logic here
-                  setState(() {
-                    // For demonstration purposes, adding some dummy search results
-                    _searchResults = List.generate(
-                            10, (index) => 'Result $index')
-                        .where((result) =>
-                            result.toLowerCase().contains(value.toLowerCase()))
-                        .toList();
-                  });
-                },
-                leading: const Icon(Icons.search),
-              ),
-            ),
+      body: _buildBody(context),
+    );
+  }
 
-            // SelectTag
-            const SizedBox(height: 8),
-            const Padding(
-              padding: const EdgeInsets.all(8),
-              child: SelectTag(),
+  _buildBody(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // SearchBar
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SearchBar(
+              controller: _searchController,
+              onTap: () {
+                // Open search view
+                setState(() {
+                  _searchResults.clear();
+                });
+              },
+              onChanged: (value) {
+                // Handle search logic here
+                setState(() {
+                  _searchResults = List.generate(
+                      10, (index) => 'Result $index')
+                      .where((result) =>
+                      result.toLowerCase().contains(value.toLowerCase()))
+                      .toList();
+                });
+              },
+              leading: const Icon(Icons.search),
             ),
+          ),
 
-            // Search Results
-            Expanded(
-              child: ListView.builder(
-                itemCount: _searchResults.isNotEmpty
-                    ? _searchResults.length
-                    : 10, // Show 10 items if no search results
-                itemBuilder: (context, index) {
-                  if (_searchResults.isNotEmpty) {
-                    // If search results are available, display them
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: EventCard(),
-                    );
-                  } else {
-                    // If no search results, display placeholder items
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: EventCard(),
-                    );
-                  }
-                },
-              ),
-            ),
-          ],
-        ),
+          // SelectTag
+          const SizedBox(height: 8),
+          const Padding(
+            padding: EdgeInsets.all(8),
+            child: SelectTag(),
+          ),
+
+          // Search Results
+          _buildListEvent(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListEvent(BuildContext context) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: _searchResults.isNotEmpty
+            ? _searchResults.length
+            : 10,
+        itemBuilder: (context, index) {
+          if (_searchResults.isNotEmpty) {
+            return const Padding(
+              padding:  EdgeInsets.symmetric(vertical: 8.0),
+              child: EventCard(),
+            );
+          } else {
+            return const Padding(
+              padding:  EdgeInsets.symmetric(vertical: 8.0),
+              child: EventCard(),
+            );
+          }
+        },
       ),
     );
   }

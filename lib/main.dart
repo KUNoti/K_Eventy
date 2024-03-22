@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:k_eventy/features/users/presentation/pages/login_page.dart';
-import 'package:k_eventy/navigation/navigation_bottom.dart';
+import 'package:k_eventy/features/users/presentation/pages/register_page.dart';
+import 'package:k_eventy/core/route/navigation_bottom.dart';
 
 void main() {
   runApp(const MyApp());
