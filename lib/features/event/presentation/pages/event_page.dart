@@ -52,6 +52,7 @@ class EventPage extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
             ),
           ),
+
           // Middle widget
           Positioned(
             bottom: 20,

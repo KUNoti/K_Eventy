@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:k_eventy/features/users/presentation/pages/login_page.dart';
-import 'package:k_eventy/features/users/presentation/pages/register_page.dart';
-import 'package:k_eventy/core/route/navigation_bottom.dart';
+import 'package:k_eventy/config/route/navigation_bottom.dart';
+import 'package:k_eventy/config/theme/app_themes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,9 +22,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: NavigationBottom(),
+      theme: theme(),
+      home: const NavigationBottom(),
     );
   }
 }
