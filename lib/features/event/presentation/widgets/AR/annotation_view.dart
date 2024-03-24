@@ -58,19 +58,19 @@ class AnnotationView extends StatelessWidget {
     IconData iconData = Icons.ac_unit_outlined;
     Color color = Colors.teal;
     switch (type) {
-      case AnnotationType.KU:
+      case AnnotationType.ku:
         iconData = Icons.cast_for_education;
         color = Colors.red;
         break;
-      case AnnotationType.Festival:
+      case AnnotationType.festival:
         iconData = Icons.festival;
         color = Colors.green;
         break;
-      case AnnotationType.Music:
+      case AnnotationType.music:
         iconData = Icons.music_note;
         color = Colors.blue;
         break;
-      case AnnotationType.Sport:
+      case AnnotationType.sport:
         iconData = Icons.sports_basketball;
         color = Colors.blue;
     }
