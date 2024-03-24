@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:k_eventy/core/constants/constants.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CreateEventDialog extends StatefulWidget {
   const CreateEventDialog({super.key});
@@ -14,7 +17,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _detailController = TextEditingController();
   final TextEditingController _locationNameController = TextEditingController();
-  File? _image;
+  XFile? _image;
   DateTime _selectedStartDate = DateTime.now();
   TimeOfDay _selectedStartTime = TimeOfDay.now();
   DateTime _selectedEndDate = DateTime.now();
@@ -30,84 +33,16 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
 
   //image
   final ImagePicker _picker = ImagePicker();
-  List<XFile>? _mediaFileList;
-  String? _retrieveDataError;
+  // List<XFile>? _mediaFileList;
+  // String? _retrieveDataError;
+  //
+  // void _setImageFileListFromFile(XFile? value) {
+  //   _mediaFileList = value == null ? null : <XFile>[value];
+  // }
 
-  void _setImageFileListFromFile(XFile? value) {
-    _mediaFileList = value == null ? null : <XFile>[value];
-  }
+  // dynamic _pickImageError;
 
-  dynamic _pickImageError;
 
-  Future<void> _selectStartDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedStartDate,
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null && picked != _selectedStartDate) {
-      setState(() {
-        _selectedStartDate = picked;
-      });
-    }
-  }
-
-  Future<void> _selectStartTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: _selectedStartTime,
-    );
-    if (picked != null && picked != _selectedStartTime) {
-      setState(() {
-        _selectedStartTime = picked;
-      });
-    }
-  }
-
-  Future<void> _selectEndDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedEndDate,
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null && picked != _selectedEndDate) {
-      setState(() {
-        _selectedEndDate = picked;
-      });
-    }
-  }
-
-  Future<void> _selectEndTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: _selectedEndTime,
-    );
-    if (picked != null && picked != _selectedEndTime) {
-      setState(() {
-        _selectedEndTime = picked;
-      });
-    }
-  }
-
-  Future<void> _onImageButtonPressed(
-      ImageSource source, {
-        required BuildContext context,
-    }) async {
-    if (context.mounted) {
-      try {
-        final XFile? pickedFile = await _picker.pickImage(source: source);
-        setState(() {
-          _setImageFileListFromFile(pickedFile);
-        });
-      } catch (e) {
-        setState(() {
-         _pickImageError = e;
-        });
-      }
-    }
-  }
 
   // Widget _previewImages() {
   //   final Text? retrieveError = _getRetrieveErrorWidget();
@@ -184,6 +119,13 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
         children: [
           // _previewImages(),
           _buildHeader(context),
+          const Divider(
+            height: 1,
+            thickness: 1,
+            indent: 10,
+            endIndent: 10,
+            color: Colors.grey,
+          ),
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
@@ -191,52 +133,9 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    GestureDetector(
-                      onTap: () {},
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 200,
-                        child: _image != null
-                            ? Image.file(
-                                _image!,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.network(
-                                'https://via.placeholder.com/400x300',
-                                fit: BoxFit.cover,
-                              ),
-                      ),
-                    ),
-
+                    _buildImageView(),
                     // Image picker button
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 16.0),
-                          child: FloatingActionButton(
-                            onPressed: () {
-                              _onImageButtonPressed(ImageSource.gallery, context: context);
-                            },
-                            heroTag: 'media',
-                            tooltip: 'Pick Single Media from gallery',
-                            child: const Icon(Icons.photo_library),
-                          ),
-                        ),
-                        if (_picker.supportsImageSource(ImageSource.camera))
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16.0, left: 8.0),
-                            child: FloatingActionButton(
-                              onPressed: () {
-                                _onImageButtonPressed(ImageSource.camera, context: context);
-                              },
-                              heroTag: 'image2',
-                              tooltip: 'Take a Photo',
-                              child: const Icon(Icons.camera_alt),
-                            ),
-                          ),
-                      ],
-                    ),
-
+                    _buildImagePickerButton(),
                     // Input
                     _buildInput(context),
                     const SizedBox(height: 10),
@@ -400,5 +299,123 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
         )
       ],
     );
+  }
+
+  Widget _buildImageView() {
+    return SizedBox(
+      child: _image != null
+        ? Image.file(
+        File(_image!.path),
+        fit: BoxFit.cover,
+        height: 200,
+        width: 200,
+        )
+        : Image.network(
+        kDefaultImage,
+        fit: BoxFit.cover,
+        height: 200,
+        width: 200,
+        ),
+    );
+  }
+
+  Widget _buildImagePickerButton() {
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: FloatingActionButton(
+            onPressed: () {
+              _onImageButtonPressed(ImageSource.gallery, context: context);
+            },
+            heroTag: 'media',
+            tooltip: 'Pick Single Media from gallery',
+            child: const Icon(Icons.photo_library),
+          ),
+        ),
+        if (_picker.supportsImageSource(ImageSource.camera))
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0, left: 8.0),
+            child: FloatingActionButton(
+              onPressed: () {
+                _onImageButtonPressed(ImageSource.camera, context: context);
+              },
+              heroTag: 'image2',
+              tooltip: 'Take a Photo',
+              child: const Icon(Icons.camera_alt),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Future<void> _onImageButtonPressed(
+      ImageSource source, {
+        required BuildContext context,
+      }) async {
+        Map<Permission, PermissionStatus> status = await [
+          Permission.camera,
+          Permission.storage,
+        ].request();
+
+        if (status[Permission.camera] != PermissionStatus.granted ||
+            status[Permission.camera] != PermissionStatus.granted) {
+          return;
+        }
+
+        _image = await _picker.pickImage(source: source);
+        setState(() {});
+  }
+
+  Future<void> _selectStartDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedStartDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != _selectedStartDate) {
+      setState(() {
+        _selectedStartDate = picked;
+      });
+    }
+  }
+
+  Future<void> _selectStartTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: _selectedStartTime,
+    );
+    if (picked != null && picked != _selectedStartTime) {
+      setState(() {
+        _selectedStartTime = picked;
+      });
+    }
+  }
+
+  Future<void> _selectEndDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedEndDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != _selectedEndDate) {
+      setState(() {
+        _selectedEndDate = picked;
+      });
+    }
+  }
+
+  Future<void> _selectEndTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: _selectedEndTime,
+    );
+    if (picked != null && picked != _selectedEndTime) {
+      setState(() {
+        _selectedEndTime = picked;
+      });
+    }
   }
 }
