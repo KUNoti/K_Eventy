@@ -1,12 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:k_eventy/features/event/presentation/pages/test_page.dart';
-import 'package:mime/mime.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:video_player/video_player.dart';
 
 class CreateEventDialog extends StatefulWidget {
   const CreateEventDialog({super.key});
@@ -114,86 +109,72 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     }
   }
 
-  Widget _buildInlineVideoPlayer(int index) {
-    final VideoPlayerController controller =
-    VideoPlayerController.file(File(_mediaFileList![index].path));
-    const double volume = kIsWeb ? 0.0 : 1.0;
-    controller.setVolume(volume);
-    controller.initialize();
-    controller.setLooping(true);
-    controller.play();
-    return Center(child: AspectRatioVideo(controller));
-  }
-
-  Widget _previewImages() {
-    final Text? retrieveError = _getRetrieveErrorWidget();
-    if (retrieveError != null) {
-      return retrieveError;
-    }
-    if (_mediaFileList != null) {
-      return Semantics(
-        label: "image",
-        child: ListView.builder(
-            key: UniqueKey(),
-            itemBuilder: (BuildContext context, int index) {
-              final String? mime = lookupMimeType(_mediaFileList![index].path);
-
-              return Semantics(
-                label: 'image_picker_example_picked_image',
-                child: kIsWeb
-                    ? Image.network(_mediaFileList![index].path)
-                    : (mime == null || mime.startsWith('image/')
-                    ? SizedBox(
-                      width: 400,
-                      height: 300,
-                      child: Image.file(
-                                        File(_mediaFileList![index].path),
-                                        errorBuilder: (BuildContext context, Object error,
-                        StackTrace? stackTrace) {
-                      return const Center(
-                          child:
-                          Text('This image type is not supported'));
-                                        },
-                                      ),
-                    )
-                    : _buildInlineVideoPlayer(index)),
-              );
-            }
-        ),
-      );
-    } else if (_pickImageError != null) {
-      return Text(
-        'Pick image error: $_pickImageError',
-        textAlign: TextAlign.center,
-      );
-    } else {
-      return Stack(
-        alignment: Alignment.center,
-        children: [
-          const Text(
-          'You have not yet picked an image.',
-          textAlign: TextAlign.center,
-          ),
-          Image.network(
-            'https://via.placeholder.com/400x300',
-            fit: BoxFit.cover,
-          )
-        ],
-      );
-    }
-  }
-
-  Text? _getRetrieveErrorWidget() {
-    if (_retrieveDataError != null) {
-      final Text result = Text(_retrieveDataError!);
-      _retrieveDataError = null;
-      return result;
-    }
-    return null;
-  }
-
-
-
+  // Widget _previewImages() {
+  //   final Text? retrieveError = _getRetrieveErrorWidget();
+  //   if (retrieveError != null) {
+  //     return retrieveError;
+  //   }
+  //   if (_mediaFileList != null) {
+  //     return Semantics(
+  //       label: "image",
+  //       child: ListView.builder(
+  //           key: UniqueKey(),
+  //           itemBuilder: (BuildContext context, int index) {
+  //             final String? mime = lookupMimeType(_mediaFileList![index].path);
+  //
+  //             return Semantics(
+  //               label: 'image_picker_example_picked_image',
+  //               child: kIsWeb
+  //                   ? Image.network(_mediaFileList![index].path)
+  //                   : (mime == null || mime.startsWith('image/')
+  //                   ? SizedBox(
+  //                     width: 400,
+  //                     height: 300,
+  //                     child: Image.file(
+  //                                       File(_mediaFileList![index].path),
+  //                                       errorBuilder: (BuildContext context, Object error,
+  //                       StackTrace? stackTrace) {
+  //                     return const Center(
+  //                         child:
+  //                         Text('This image type is not supported'));
+  //                                       },
+  //                                     ),
+  //                   )
+  //                   : _buildInlineVideoPlayer(index)),
+  //             );
+  //           }
+  //       ),
+  //     );
+  //   } else if (_pickImageError != null) {
+  //     return Text(
+  //       'Pick image error: $_pickImageError',
+  //       textAlign: TextAlign.center,
+  //     );
+  //   } else {
+  //     return Stack(
+  //       alignment: Alignment.center,
+  //       children: [
+  //         const Text(
+  //         'You have not yet picked an image.',
+  //         textAlign: TextAlign.center,
+  //         ),
+  //         Image.network(
+  //           'https://via.placeholder.com/400x300',
+  //           fit: BoxFit.cover,
+  //         )
+  //       ],
+  //     );
+  //   }
+  // }
+  //
+  // Text? _getRetrieveErrorWidget() {
+  //   if (_retrieveDataError != null) {
+  //     final Text result = Text(_retrieveDataError!);
+  //     _retrieveDataError = null;
+  //     return result;
+  //   }
+  //   return null;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -201,28 +182,8 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _previewImages(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Add Event',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0,
-                  ),
-                ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
+          // _previewImages(),
+          _buildHeader(context),
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
@@ -277,95 +238,10 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     ),
 
                     // Input
-                    TextField(
-                      controller: _titleController,
-                      decoration: const InputDecoration(
-                        labelText: 'Title',
-                      ),
-                    ),
-                    TextField(
-                      controller: _detailController,
-                      maxLines: null,
-                      decoration: const InputDecoration(
-                        labelText: 'Detail',
-                      ),
-                    ),
+                    _buildInput(context),
                     const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => _selectStartDate(context),
-                            child: TextField(
-                              controller: TextEditingController(
-                                text:
-                                    '${_selectedStartDate.day}/${_selectedStartDate.month}/${_selectedStartDate.year}',
-                              ),
-                              enabled: false,
-                              decoration: const InputDecoration(
-                                labelText: 'Start Date',
-                                suffixIcon: Icon(Icons.calendar_today),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => _selectStartTime(context),
-                            child: TextField(
-                              controller: TextEditingController(
-                                text:
-                                    '${_selectedStartTime.hour}:${_selectedStartTime.minute}',
-                              ),
-                              enabled: false,
-                              decoration: const InputDecoration(
-                                labelText: 'Start Time',
-                                suffixIcon: Icon(Icons.access_time),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => _selectEndDate(context),
-                            child: TextField(
-                              controller: TextEditingController(
-                                text:
-                                    '${_selectedEndDate.day}/${_selectedEndDate.month}/${_selectedEndDate.year}',
-                              ),
-                              enabled: false,
-                              decoration: const InputDecoration(
-                                labelText: 'End Date',
-                                suffixIcon: Icon(Icons.calendar_today),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => _selectEndTime(context),
-                            child: TextField(
-                              controller: TextEditingController(
-                                text:
-                                    '${_selectedEndTime.hour}:${_selectedEndTime.minute}',
-                              ),
-                              enabled: false,
-                              decoration: const InputDecoration(
-                                labelText: 'End Time',
-                                suffixIcon: Icon(Icons.access_time),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Date Selector,
+                    _buildDateSelector(context),
                     const SizedBox(height: 10),
                     TextField(
                       controller: _locationNameController,
@@ -378,21 +254,151 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Save the event or perform other actions here
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Save'),
-              ),
-            ),
-          ),
+          _buildButton(context),
         ],
       ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text(
+            'Add Event',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18.0,
+            ),
+          ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: ElevatedButton(
+          onPressed: () {
+            // Save the event or perform other actions here
+            Navigator.of(context).pop();
+          },
+          child: const Text('Save'),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInput(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+          controller: _titleController,
+          decoration: const InputDecoration(
+            labelText: 'Title',
+          ),
+        ),
+        TextField(
+          controller: _detailController,
+          maxLines: null,
+          decoration: const InputDecoration(
+            labelText: 'Detail',
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildDateSelector(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () => _selectStartDate(context),
+                child: TextField(
+                  controller: TextEditingController(
+                    text:
+                    '${_selectedStartDate.day}/${_selectedStartDate.month}/${_selectedStartDate.year}',
+                  ),
+                  enabled: false,
+                  decoration: const InputDecoration(
+                    labelText: 'Start Date',
+                    suffixIcon: Icon(Icons.calendar_today),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: GestureDetector(
+                onTap: () => _selectStartTime(context),
+                child: TextField(
+                  controller: TextEditingController(
+                    text:
+                    '${_selectedStartTime.hour}:${_selectedStartTime.minute}',
+                  ),
+                  enabled: false,
+                  decoration: const InputDecoration(
+                    labelText: 'Start Time',
+                    suffixIcon: Icon(Icons.access_time),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () => _selectEndDate(context),
+                child: TextField(
+                  controller: TextEditingController(
+                    text:
+                    '${_selectedEndDate.day}/${_selectedEndDate.month}/${_selectedEndDate.year}',
+                  ),
+                  enabled: false,
+                  decoration: const InputDecoration(
+                    labelText: 'End Date',
+                    suffixIcon: Icon(Icons.calendar_today),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: GestureDetector(
+                onTap: () => _selectEndTime(context),
+                child: TextField(
+                  controller: TextEditingController(
+                    text:
+                    '${_selectedEndTime.hour}:${_selectedEndTime.minute}',
+                  ),
+                  enabled: false,
+                  decoration: const InputDecoration(
+                    labelText: 'End Time',
+                    suffixIcon: Icon(Icons.access_time),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
 }
