@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:k_eventy/features/event/data/models/event_model.dart';
+import 'package:k_eventy/core/constants/constants.dart';
+import 'package:k_eventy/features/event/data/models/event.dart';
+import 'package:k_eventy/features/event/domain/entities/event.dart';
 import 'package:k_eventy/features/event/presentation/pages/event_page.dart';
 
 class EventCard extends StatelessWidget {
-  const EventCard({Key? key}) : super(key: key);
+  EventEntity? event;
+  EventCard({Key? key, this.event}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     EventModel mockEvent = EventModel(
-      id: 3,
       latitude: 34.0522,
       longitude: -118.2437,
       title: "Event 3",
       image: "https://via.placeholder.com/150",
-      creator: "Creator 3",
+      creator: 1,
       detail: "Event 3 details",
       tag: "Tag 3",
       locationName: "Location 3",
-      startDateTime: DateTime.now().add(Duration(days: 2)),
-      endDateTime: DateTime.now().add(Duration(days: 2, hours: 2)),
+      startDateTime: DateTime.now().add(const Duration(days: 2)),
+      endDateTime: DateTime.now().add(const Duration(days: 2, hours: 2)),
     );
 
     return GestureDetector(
@@ -29,7 +30,7 @@ class EventCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => EventPage(
-              event: mockEvent,
+              event: event,
             ),
           ),
         );
@@ -41,22 +42,22 @@ class EventCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
 
         ),
-        child: _buildCard(mockEvent),
+        child: _buildCard(event!),
       ),
     );
   }
 
-  Widget _buildCard(EventModel mockEvent) {
+  Widget _buildCard(EventEntity event) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(12),
             topRight: Radius.circular(12),
           ),
           child: Image.network(
-            mockEvent.image,
+            event.image ?? kDefaultImage,
             height: 150,
             fit: BoxFit.cover,
           ),
@@ -67,22 +68,22 @@ class EventCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                mockEvent.title,
-                style: TextStyle(
+                event.title ?? "",
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
-                'Location: ${mockEvent.locationName}',
+                'Location: ${event.locationName}',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey[700],
                 ),
               ),
-              SizedBox(height: 8),
-              Text(
+              const SizedBox(height: 8),
+              const Text(
                 'Status: Active',
                 style: TextStyle(
                   fontSize: 16,

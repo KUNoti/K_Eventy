@@ -25,7 +25,7 @@ class MyEventsPage extends StatelessWidget {
           children: [
             Text(
               'Following',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
             const FollowingEventsList(),
@@ -34,7 +34,7 @@ class MyEventsPage extends StatelessWidget {
 
             Text(
               'Created Events',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
             const CreatedEventsList(),
@@ -42,7 +42,7 @@ class MyEventsPage extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               'Notifications',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
             const NotificationsList(),

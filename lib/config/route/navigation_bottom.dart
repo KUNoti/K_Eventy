@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_bloc.dart';
+import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_state.dart';
+import 'package:k_eventy/features/event/presentation/pages/create_event_page.dart';
 import 'package:k_eventy/features/event/presentation/pages/home_page.dart';
 import 'package:k_eventy/features/event/presentation/pages/myevent_page.dart';
 import 'package:k_eventy/features/event/presentation/pages/search_page.dart';
 import 'package:k_eventy/features/event/presentation/widgets/event/create_event_dialog.dart';
-import 'package:k_eventy/features/users/presentation/pages/user_setting.dart';
 
 class NavigationBottom extends StatefulWidget {
   const NavigationBottom({Key? key}) : super(key: key);
@@ -37,69 +41,110 @@ class _NavigationBottomState extends State<NavigationBottom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: SizedBox(
-        width: 50,
-        height: 50,
-        child: FloatingActionButton(
-            onPressed: () {
-              openDialog(context);
-            },
-            tooltip: 'Add New Item',
-            elevation: 3,
-            child: const Icon(Icons.add)
-        ),
-      ),
+      floatingActionButton: _buildCreateEventButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-        children: const <Widget>[
-          HomePage(),
-          SearchPage(),
-          MyEventsPage(),
-          UserSettingsPage(),
-        ],
+      body: _buildBody(),
+      bottomNavigationBar: _buildBottomNavbar(),
+    );
+  }
+
+  Widget _buildCreateEventButton() {
+    return SizedBox(
+      width: 50,
+      height: 50,
+      child: FloatingActionButton(
+          onPressed: () {
+            openDialog(context);
+          },
+          tooltip: 'Add New Item',
+          elevation: 3,
+          child: const Icon(Icons.add)
       ),
-      bottomNavigationBar: NavigationBar(
-        height: 70,
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-            _pageController.animateToPage(
-              index,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.ease,
-            );
-          });
-        },
-        selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
-          NavigationDestination(
-            selectedIcon: Icon(Icons.home),
-            icon: Icon(Icons.home_outlined),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.search),
-            icon: Icon(Icons.search_outlined),
-            label: 'Search',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.favorite),
-            icon: Icon(Icons.favorite_outline),
-            label: 'My Events',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.person),
-            icon: Icon(Icons.person_outline),
-            label: 'Profile',
-          ),
-        ],
-      ),
+    );
+  }
+
+  Widget _buildBody() {
+    return PageView(
+      controller: _pageController,
+      onPageChanged: (int index) {
+        setState(() {
+          currentPageIndex = index;
+        });
+      },
+      children: <Widget>[
+        BlocBuilder<RemoteEventsBloc, RemoteEventsState>(
+          builder: (_, state) {
+            if (state is RemoteEventsLoading) {
+              return const Center(child: CupertinoActivityIndicator());
+            }
+            if (state is RemoteEventsError) {
+              return const Center(child: Icon(Icons.refresh));
+            }
+            if (state is RemoteEventsDone) {
+              return HomePage(events: state.events);
+            }
+            return const SizedBox();
+          },
+        ),
+        BlocBuilder<RemoteEventsBloc, RemoteEventsState>(
+          builder: (_, state) {
+            if (state is RemoteEventsLoading) {
+              return const Center(child: CupertinoActivityIndicator());
+            }
+
+            if (state is RemoteEventsError) {
+              return const Center(child: Icon(Icons.refresh));
+            }
+
+            if (state is RemoteEventsDone) {
+              return SearchPage(events: state.events);
+            }
+            return const SizedBox();
+          }
+        ),
+        MyEventsPage(),
+        // UserSettingsPage(),
+        CreateEventPage(),
+      ],
+    );
+  }
+
+  Widget _buildBottomNavbar() {
+    return NavigationBar(
+      height: 70,
+      onDestinationSelected: (int index) {
+        setState(() {
+          currentPageIndex = index;
+          _pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.ease,
+          );
+        });
+      },
+      selectedIndex: currentPageIndex,
+      destinations: const <Widget>[
+        NavigationDestination(
+          selectedIcon: Icon(Icons.home),
+          icon: Icon(Icons.home_outlined),
+          label: 'Home',
+        ),
+        NavigationDestination(
+          selectedIcon: Icon(Icons.search),
+          icon: Icon(Icons.search_outlined),
+          label: 'Search',
+        ),
+        NavigationDestination(
+          selectedIcon: Icon(Icons.favorite),
+          icon: Icon(Icons.favorite_outline),
+          label: 'My Events',
+        ),
+        NavigationDestination(
+          selectedIcon: Icon(Icons.person),
+          icon: Icon(Icons.person_outline),
+          label: 'Profile',
+        ),
+      ],
     );
   }
 }

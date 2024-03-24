@@ -5,7 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:k_eventy/features/event/domain/entities/event.dart';
 
 class MapSection extends StatefulWidget {
-  final List<Event> events;
+  final List<EventEntity> events;
 
   const MapSection({super.key, required this.events});
 
@@ -17,7 +17,6 @@ class _MapSectionState extends State<MapSection> {
   late GoogleMapController mapController;
 
   final LatLng _center = const LatLng(13.854529, 100.570012);
-  Set<Marker> _markers = {};
 
   @override
   void initState() {
