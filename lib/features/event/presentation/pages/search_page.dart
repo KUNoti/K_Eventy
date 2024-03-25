@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:k_eventy/features/event/domain/entities/event.dart';
 import 'package:k_eventy/features/event/presentation/widgets/common/select_tag.dart';
 import 'package:k_eventy/features/event/presentation/widgets/event/event_card.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  List<EventEntity>? events;
+  SearchPage({Key? key, this.events}) : super(key: key);
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -72,19 +74,18 @@ class _SearchPageState extends State<SearchPage> {
   Widget _buildListEvent(BuildContext context) {
     return Expanded(
       child: ListView.builder(
-        itemCount: _searchResults.isNotEmpty
-            ? _searchResults.length
-            : 10,
+        itemCount: widget.events?.length,
         itemBuilder: (context, index) {
+          final event = widget.events?[index];
           if (_searchResults.isNotEmpty) {
-            return const Padding(
-              padding:  EdgeInsets.symmetric(vertical: 8.0),
-              child: EventCard(),
+            return Padding(
+              padding:  const EdgeInsets.symmetric(vertical: 8.0),
+              child: EventCard(event: event),
             );
           } else {
-            return const Padding(
-              padding:  EdgeInsets.symmetric(vertical: 8.0),
-              child: EventCard(),
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: EventCard(event: event),
             );
           }
         },

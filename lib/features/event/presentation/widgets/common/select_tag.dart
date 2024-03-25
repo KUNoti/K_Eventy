@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-enum Tag { music, sport, KU, art, festival }
+enum Tag { music, sport, ku, art, festival }
 
 class SelectTag extends StatefulWidget {
-  const SelectTag({Key? key});
+  const SelectTag({Key? key}): super(key: key);
 
   @override
   State<SelectTag> createState() => _SelectTagState();
@@ -27,7 +27,7 @@ class _SelectTagState extends State<SelectTag> {
       emptySelectionAllowed: true,
       segments: const <ButtonSegment<Tag>>[
         ButtonSegment<Tag>(
-            value: Tag.KU,
+            value: Tag.ku,
             label: Text('KU', style: TextStyle(fontSize: 8)),
             icon: Icon(Icons.school)),
         ButtonSegment<Tag>(

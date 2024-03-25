@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:k_eventy/features/users/presentation/pages/login_page.dart';
-import 'package:k_eventy/features/users/presentation/pages/register_page.dart';
-import 'package:k_eventy/core/route/navigation_bottom.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:k_eventy/config/route/navigation_bottom.dart';
+import 'package:k_eventy/config/theme/app_themes.dart';
+import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_bloc.dart';
+import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_event.dart';
+import 'package:k_eventy/injection_container.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDependencies();
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-    // _fetchEvents();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: NavigationBottom(),
+    return BlocProvider<RemoteEventsBloc>(
+      create: (context) => sl()..add(const GetEvents()),
+      child:  MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: theme(),
+        home: const NavigationBottom(),
+      ),
     );
   }
 }
+
+

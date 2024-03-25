@@ -18,10 +18,10 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Settings'),
+        title: const Text('User Settings'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: ListView(
@@ -31,10 +31,10 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                 height: 150,
                 width: 150,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 initialValue: _username,
-                decoration: InputDecoration(labelText: 'Username'),
+                decoration: const InputDecoration(labelText: 'Username'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a username';
@@ -47,7 +47,7 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
               ),
               TextFormField(
                 initialValue: _email,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'Email'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter an email';
@@ -60,7 +60,7 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
               ),
               TextFormField(
                 initialValue: _password,
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: const InputDecoration(labelText: 'Password'),
                 obscureText: true, // Password is obscured
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -72,10 +72,10 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                   _password = newValue!;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _saveForm,
-                child: Text('Save'),
+                child: const Text('Save'),
               ),
             ],
           ),
@@ -91,7 +91,7 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
       // Perform saving logic here, such as updating user data in a database
       // You can also show a confirmation message to the user
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Settings saved')),
+        const SnackBar(content: Text('Settings saved')),
       );
     }
   }

@@ -4,7 +4,7 @@ import 'package:ar_location_view/ar_annotation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:uuid/uuid.dart';
 
-enum AnnotationType { KU, Festival, Music, Sport }
+enum AnnotationType { ku, festival, music, sport }
 
 class Annotation extends ArAnnotation {
   final AnnotationType type;

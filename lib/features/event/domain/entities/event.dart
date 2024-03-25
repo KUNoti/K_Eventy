@@ -1,27 +1,49 @@
-class Event {
-  final int id;
-  final double latitude;
-  final double longitude;
-  final String title;
-  final String image;
-  final String creator;
-  final String detail;
-  final String tag;
-  final String locationName;
-  final DateTime startDateTime;
-  final DateTime endDateTime;
+import 'package:equatable/equatable.dart';
 
-  Event({
-    required this.id,
-    required this.latitude,
-    required this.longitude,
-    required this.title,
-    required this.image,
-    required this.creator,
-    required this.detail,
-    required this.tag,
-    required this.locationName,
-    required this.startDateTime,
-    required this.endDateTime,
+class EventEntity extends Equatable {
+  final String ? title;
+  final double ? latitude;
+  final double ? longitude;
+  final DateTime ? startDateTime;
+  final DateTime ? endDateTime;
+  final double ? price;
+  final String ? image;
+  final int ? creator;
+  final String ? detail;
+  final String ? tag;
+  final String ? locationName;
+  final bool ? needRegis;
+
+  const EventEntity({
+    this.title,
+    this.latitude,
+    this.longitude,
+    this.startDateTime,
+    this.endDateTime,
+    this.price,
+    this.image,
+    this.creator,
+    this.detail,
+    this.tag,
+    this.locationName,
+    this.needRegis
   });
+
+  @override
+  List<Object ?> get props {
+    return [
+      title,
+      latitude,
+      longitude,
+      startDateTime,
+      endDateTime,
+      price,
+      image,
+      creator,
+      detail,
+      tag,
+      locationName,
+      needRegis,
+    ];
+  }
 }

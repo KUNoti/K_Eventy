@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:k_eventy/features/event/data/models/event_model.dart';
+import 'package:k_eventy/features/event/domain/entities/event.dart';
 
 class EventPage extends StatelessWidget {
-  final EventModel event;
+  final EventEntity? event;
 
-  const EventPage({Key? key, required this.event}) : super(key: key);
+  const EventPage({Key? key, this.event}) : super(key: key);
 
   void onTap() {}
 
@@ -46,12 +46,13 @@ class EventPage extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Image.network(
-              event.image,
+              event?.image ?? "",
               fit: BoxFit.cover,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
             ),
           ),
+
           // Middle widget
           Positioned(
             bottom: 20,
@@ -60,7 +61,7 @@ class EventPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  event.title,
+                  event?.title ?? "",
                   style: const TextStyle(
                     fontSize: 24,
                     color: Colors.white,
@@ -72,7 +73,7 @@ class EventPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      'Location: ${event.locationName}',
+                      'Location: ${event?.locationName}',
                       style: const TextStyle(
                         fontSize: 10,
                         color: Colors.white,
@@ -80,7 +81,7 @@ class EventPage extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'Creator: ${event.creator}',
+                      'Creator: ${event?.creator}',
                       style: const TextStyle(
                         fontSize: 10,
                         color: Colors.white,
@@ -116,7 +117,7 @@ class EventPage extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text(event.detail),
+            child: Text(event?.detail ?? ""),
           ),
         )
       ],
