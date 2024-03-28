@@ -10,19 +10,6 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    EventModel mockEvent = EventModel(
-      latitude: 34.0522,
-      longitude: -118.2437,
-      title: "Event 3",
-      image: "https://via.placeholder.com/150",
-      creator: 1,
-      detail: "Event 3 details",
-      tag: "Tag 3",
-      locationName: "Location 3",
-      startDateTime: DateTime.now().add(const Duration(days: 2)),
-      endDateTime: DateTime.now().add(const Duration(days: 2, hours: 2)),
-    );
-
     return GestureDetector(
       onTap: () {
         // Navigate to the event page when the card is tapped
@@ -35,65 +22,90 @@ class EventCard extends StatelessWidget {
           ),
         );
       },
-      child: Card(
-        color: Colors.white,
-        elevation: 3,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-
-        ),
-        child: _buildCard(event!),
-      ),
+      child: _buildCard(event!)
     );
   }
 
   Widget _buildCard(EventEntity event) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-          ),
-          child: Image.network(
-            event.image ?? kDefaultImage,
-            height: 150,
+    return Card(
+      // Set the shape of the card using a rounded rectangle border with a 8 pixel radius
+      color: const Color.fromRGBO(238, 242, 249, 1.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      // Set the clip behavior of the card
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      // Define the child widgets of the card
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          // Display an image at the top of the card that fills the width of the card and has a height of 160 pixels
+          Image.network(
+            event.image!,
+            height: 160,
+            width: double.infinity,
             fit: BoxFit.cover,
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                event.title ?? "",
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+          // Add a container with padding that contains the card's title, text, and buttons
+          Container(
+            padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                // Display the card's title using a font size of 24 and a dark grey color
+                Text(
+                  event.title!,
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.grey[800],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Location: ${event.locationName}',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[700],
+                // Add a space between the title and the text
+                Container(height: 10),
+                // Display the card's text using a font size of 15 and a light grey color
+                Text(
+                  event.detail!,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey[700],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Status: Active',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.green,
+                // Add a row with two buttons spaced apart and aligned to the right side of the card
+                Row(
+                  children: <Widget>[
+                    // Add a spacer to push the buttons to the right side of the card
+                    const Spacer(),
+                    // Add a text button labeled "SHARE" with transparent foreground color and an accent color for the text
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.transparent,
+                      ),
+                      child: const Text(
+                        "SHARE",
+                        style: TextStyle(color: Colors.redAccent),
+                      ),
+                      onPressed: () {},
+                    ),
+                    // Add a text button labeled "EXPLORE" with transparent foreground color and an accent color for the text
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.transparent,
+                      ),
+                      child: const Text(
+                        "EXPLORE",
+                        style: TextStyle(color: Colors.redAccent),
+                      ),
+                      onPressed: () {},
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+          // Add a small space between the card and the next widget
+          Container(height: 5),
+        ],
+      ),
     );
   }
 }

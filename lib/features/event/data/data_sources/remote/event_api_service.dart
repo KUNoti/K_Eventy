@@ -8,6 +8,6 @@ part 'event_api_service.g.dart';
 abstract class EventApiService {
   factory EventApiService(Dio dio) = _EventApiService;
 
-  @GET('/events')
+  @GET('/api/event/events')
   Future<HttpResponse<List<EventModel>>> getEvents();
 }

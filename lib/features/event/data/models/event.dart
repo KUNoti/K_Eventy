@@ -4,11 +4,11 @@ import 'package:k_eventy/features/event/domain/entities/event.dart';
 class EventModel extends EventEntity {
    const EventModel({
     String? title,
-    double? latitude,
-    double? longitude,
+    num? latitude,
+    num? longitude,
     DateTime? startDateTime,
     DateTime? endDateTime,
-    double? price,
+    num? price,
     String? image,
     int? creator,
     String? detail,
@@ -33,13 +33,13 @@ class EventModel extends EventEntity {
   factory EventModel.fromJson(Map<String, dynamic> map){
     return EventModel(
       title: map['title'] ?? "",
-      latitude: map['latitude'] ?? 13.5,
-      longitude: map['longitude'] ?? 120,
+      // latitude: map['latitude'] ?? 13.5,
+      // longitude: map['longitude'] ?? 120.0,
       startDateTime: DateTime.parse(map['start_date']),
       endDateTime: DateTime.parse(map['end_date']),
-      price: map['price'] ?? 0,
-      image: map['urlToImage'] != null && map['urlToImage'] != "" ? map['urlToImage'] : kDefaultImage,
-      creator: map['creator'] ?? "creator",
+      price: map['price'] ?? 0.0,
+      image: map['image'] != null && map['image'] != "" ? map['image'] : kDefaultImage,
+      creator: map['creator'] ?? 0,
       detail: map['detail'] ?? "",
       locationName: map['location_name'] ?? "",
       needRegis: map['need_regis'] ?? false

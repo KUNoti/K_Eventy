@@ -2,11 +2,11 @@ import 'package:equatable/equatable.dart';
 
 class EventEntity extends Equatable {
   final String ? title;
-  final double ? latitude;
-  final double ? longitude;
+  final num ? latitude;
+  final num ? longitude;
   final DateTime ? startDateTime;
   final DateTime ? endDateTime;
-  final double ? price;
+  final num ? price;
   final String ? image;
   final int ? creator;
   final String ? detail;
