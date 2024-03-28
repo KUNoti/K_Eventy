@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:k_eventy/config/route/navigation_bottom.dart';
 import 'package:k_eventy/config/theme/app_themes.dart';
-import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_bloc.dart';
-import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_event.dart';
+import 'package:k_eventy/features/users/presentation/bloc/auth/remote/remote_auth_bloc.dart';
+import 'package:k_eventy/features/users/presentation/pages/login_page.dart';
 import 'package:k_eventy/injection_container.dart';
 
 Future<void> main() async {
@@ -17,12 +16,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RemoteEventsBloc>(
-      create: (context) => sl()..add(const GetEvents()),
-      child:  MaterialApp(
+    return BlocProvider<RemoteAuthBloc>(
+      create: (context) => sl<RemoteAuthBloc>(),
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: theme(),
-        home: const NavigationBottom(),
+        home: LoginPage(),
       ),
     );
   }
