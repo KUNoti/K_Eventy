@@ -1,18 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:k_eventy/core/constants/constants.dart';
+import 'package:k_eventy/features/users/domain/entities/user.dart';
+import 'package:k_eventy/features/users/presentation/bloc/auth/remote/remote_auth_bloc.dart';
+import 'package:k_eventy/features/users/presentation/bloc/auth/remote/remote_auth_state.dart';
 
-class UserSettingsPage extends StatefulWidget {
-  const UserSettingsPage({Key? key}) : super(key: key);
+class UserSettingsPage extends StatelessWidget {
+  UserSettingsPage({Key? key}) : super(key: key);
 
-  @override
-  _UserSettingsPageState createState() => _UserSettingsPageState();
-}
-
-class _UserSettingsPageState extends State<UserSettingsPage> {
-  String _username = 'John Doe';
-  String _email = 'johndoe@example.com';
-  String _password = 'password123';
-
-  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -20,79 +16,95 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
       appBar: AppBar(
         title: const Text('User Settings'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              Image.network(
-                'https://via.placeholder.com/150', // Placeholder image URL
-                height: 150,
-                width: 150,
+      body: BlocBuilder<RemoteAuthBloc, RemoteAuthState>(
+        builder: (context, state) {
+          if (state is RemoteAuthDone && state.user != null) {
+            UserEntity? user = state.user;
+            // print(user?.username);
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      user != null ? Column(
+                        children: [
+                          _buildImage(user.imagePath),
+                          _buildSetting(user),
+                        ],
+                      )
+                      : const Placeholder()
+                    ],
+                  ),
+                ),
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                initialValue: _username,
-                decoration: const InputDecoration(labelText: 'Username'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a username';
-                  }
-                  return null;
-                },
-                onSaved: (newValue) {
-                  _username = newValue!;
-                },
-              ),
-              TextFormField(
-                initialValue: _email,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an email';
-                  }
-                  return null;
-                },
-                onSaved: (newValue) {
-                  _email = newValue!;
-                },
-              ),
-              TextFormField(
-                initialValue: _password,
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true, // Password is obscured
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a password';
-                  }
-                  return null;
-                },
-                onSaved: (newValue) {
-                  _password = newValue!;
-                },
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _saveForm,
-                child: const Text('Save'),
-              ),
-            ],
-          ),
-        ),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     );
   }
 
-  void _saveForm() {
-    final form = _formKey.currentState;
-    if (form != null && form.validate()) {
-      form.save();
-      // Perform saving logic here, such as updating user data in a database
-      // You can also show a confirmation message to the user
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Settings saved')),
-      );
-    }
+  Widget _buildImage(String? userImage) {
+    return Image.network(
+        userImage ?? 'https://via.placeholder.com/150', // Placeholder image URL
+        height: 150,
+        width: 150,
+    );
+  }
+
+  Widget _buildSetting(UserEntity? user) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          leading: const Icon(Icons.person),
+          title: const Text('Username'),
+          subtitle: Text(user?.username ?? "Username"),
+          onTap: () {
+            // Handle onTap action
+          },
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(Icons.email),
+          title: const Text('Email'),
+          subtitle: Text(user?.email ?? "Email"),
+          onTap: () {
+            // Handle onTap action
+          },
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(Icons.email),
+          title: const Text('Name'),
+          subtitle: Text(user?.name ?? "Name"),
+          onTap: () {
+            // Handle onTap action
+          },
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(Icons.lock),
+          title: const Text('Change Password'),
+          onTap: () {
+            // Handle onTap action
+          },
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(Icons.logout),
+          title: const Text('Log Out'),
+          onTap: () {
+            // Handle onTap action
+          },
+        ),
+      ],
+    );
   }
 }
