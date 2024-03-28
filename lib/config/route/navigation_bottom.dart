@@ -2,12 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_bloc.dart';
+import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_event.dart';
 import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_state.dart';
 import 'package:k_eventy/features/event/presentation/pages/home_page.dart';
 import 'package:k_eventy/features/event/presentation/pages/myevent_page.dart';
 import 'package:k_eventy/features/event/presentation/pages/search_page.dart';
 import 'package:k_eventy/features/event/presentation/widgets/event/create_event_dialog.dart';
 import 'package:k_eventy/features/users/presentation/pages/user_setting.dart';
+import 'package:k_eventy/injection_container.dart';
 
 class NavigationBottom extends StatefulWidget {
   const NavigationBottom({Key? key}) : super(key: key);
@@ -37,14 +39,16 @@ class _NavigationBottomState extends State<NavigationBottom> {
     builder: (context) => const CreateEventDialog(),
   );
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: _buildCreateEventButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: _buildBody(),
-      bottomNavigationBar: _buildBottomNavbar(),
+    return BlocProvider<RemoteEventsBloc>(
+      create: (context) => sl()..add(const GetEvents()),
+      child: Scaffold(
+        floatingActionButton: _buildCreateEventButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        body: _buildBody(),
+        bottomNavigationBar: _buildBottomNavbar(),
+      ),
     );
   }
 

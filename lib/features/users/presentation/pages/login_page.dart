@@ -1,6 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:k_eventy/config/route/navigation_bottom.dart';
 import 'package:k_eventy/features/event/presentation/widgets/common/my_button.dart';
 import 'package:k_eventy/features/event/presentation/widgets/common/my_textfield.dart';
+import 'package:k_eventy/features/users/presentation/bloc/auth/remote/remote_auth_bloc.dart';
+import 'package:k_eventy/features/users/presentation/bloc/auth/remote/remote_auth_event.dart';
+import 'package:k_eventy/features/users/presentation/bloc/auth/remote/remote_auth_state.dart';
 import 'package:k_eventy/features/users/presentation/pages/register_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -11,7 +17,12 @@ class LoginPage extends StatelessWidget {
   final passwordController = TextEditingController();
 
   // sign user in method
-  void signUserIn() {}
+  void signUserIn(BuildContext context) {
+    BlocProvider.of<RemoteAuthBloc>(context).add(LoginEvents(
+      usernameController.text,
+      passwordController.text,
+    ));
+  }
 
   void navigateToRegisterPage(BuildContext context) {
     Navigator.push(
@@ -26,99 +37,115 @@ class LoginPage extends StatelessWidget {
       backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 50),
+          child: BlocListener<RemoteAuthBloc, RemoteAuthState>(
+            listener: (context, state) {
+              if (state is RemoteAuthDone) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const NavigationBottom()),
+                );
+              }
 
-              // logo
-              const Icon(
-                Icons.android,
-                size: 100,
-              ),
+              if (state is RemoteAuthError) {
+                if (kDebugMode) {
+                  print("error login");
+                }
+              }
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 50),
 
-              const SizedBox(height: 50),
-
-              // welcome back, you've been missed!
-              Text(
-                'Welcome back you\'ve been missed!',
-                style: TextStyle(
-                  color: Colors.grey[700],
-                  fontSize: 16,
+                // logo
+                const Icon(
+                  Icons.android,
+                  size: 100,
                 ),
-              ),
 
-              const SizedBox(height: 25),
+                const SizedBox(height: 50),
 
-              // username textfield
-              MyTextField(
-                controller: usernameController,
-                hintText: 'Username',
-                obscureText: false,
-              ),
+                // welcome back, you've been missed!
+                Text(
+                  'Welcome back you\'ve been missed!',
+                  style: TextStyle(
+                    color: Colors.grey[700],
+                    fontSize: 16,
+                  ),
+                ),
 
-              const SizedBox(height: 10),
+                const SizedBox(height: 25),
 
-              // password textfield
-              MyTextField(
-                controller: passwordController,
-                hintText: 'Password',
-                obscureText: true,
-              ),
+                // username text field
+                MyTextField(
+                  controller: usernameController,
+                  hintText: 'Username',
+                  obscureText: false,
+                ),
 
-              const SizedBox(height: 25),
+                const SizedBox(height: 10),
 
-              // sign in button
-              MyButton(
-                onTap: signUserIn,
-                text: 'Sign in',
-              ),
+                // password text field
+                MyTextField(
+                  controller: passwordController,
+                  hintText: 'Password',
+                  obscureText: true,
+                ),
 
-              const SizedBox(height: 25),
+                const SizedBox(height: 25),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.grey[400],
+                // sign in button
+                MyButton(
+                  onTap: () => signUserIn(context),
+                  text: 'Sign in',
+                ),
+
+                const SizedBox(height: 25),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Divider(
+                          thickness: 0.5,
+                          color: Colors.grey[400],
+                        ),
                       ),
+                      Expanded(
+                        child: Divider(
+                          thickness: 0.5,
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 25),
+                // not a member? register now
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Not a member?',
+                      style: TextStyle(color: Colors.grey[700]),
                     ),
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.grey[400],
+                    const SizedBox(width: 4),
+                    GestureDetector(
+                      onTap: () => navigateToRegisterPage(context),
+                      child: const Text(
+                        'Register now',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
-                ),
-              ),
-
-              const SizedBox(height: 25),
-              // not a member? register now
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Not a member?',
-                    style: TextStyle(color: Colors.grey[700]),
-                  ),
-                  const SizedBox(width: 4),
-                  GestureDetector(
-                    onTap: () => navigateToRegisterPage(context),
-                    child: const Text(
-                      'Register now',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
