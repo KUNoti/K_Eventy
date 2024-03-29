@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:k_eventy/features/event/domain/entities/event.dart';
+import 'package:k_eventy/features/event/presentation/widgets/event/register_form.dart';
 
 class EventPage extends StatelessWidget {
   final EventEntity? event;
@@ -10,6 +11,7 @@ class EventPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: _buildAppbar(context),
       body: Column(
@@ -96,12 +98,23 @@ class EventPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Description',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            children: [
+              const Text(
+                'Description',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Spacer(),
+              IconButton(
+                icon: const Icon(Icons.favorite, color: Colors.redAccent),
+                onPressed: () {
+                  // Add your onPressed logic here
+                },
+              ),
+            ],
           ),
           const Divider(
             color: Colors.grey,
@@ -164,7 +177,26 @@ class EventPage extends StatelessWidget {
                       color: Colors.white, // Text color
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return  Container(
+                            height: 200,
+                            color: Colors.amber,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  RegisterForm()
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                    );
+                  },
                 ),
               ),
               const SizedBox(width: 15),

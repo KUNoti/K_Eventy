@@ -163,7 +163,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               child: const Icon(
-                Icons.person_2_outlined,
+                Icons.person,
                 size: 150,
               ),
             ),
