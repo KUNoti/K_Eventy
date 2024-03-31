@@ -44,7 +44,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
     return BlocProvider<RemoteEventsBloc>(
       create: (context) => sl()..add(const GetEvents()),
       child: Scaffold(
-        floatingActionButton: _buildCreateEventButton(),
+        floatingActionButton: _buildCreateEventButton(context),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: _buildBody(),
         bottomNavigationBar: _buildBottomNavbar(),
@@ -52,7 +52,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
     );
   }
 
-  Widget _buildCreateEventButton() {
+  Widget _buildCreateEventButton(BuildContext context) {
     return SizedBox(
       width: 50,
       height: 50,

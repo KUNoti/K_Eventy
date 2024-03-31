@@ -1,15 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:k_eventy/features/event/domain/entities/event.dart';
+import 'package:k_eventy/features/event/presentation/widgets/event/register_form.dart';
 
 class EventPage extends StatelessWidget {
   final EventEntity? event;
 
   const EventPage({Key? key, this.event}) : super(key: key);
 
-  void onTap() {}
-
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: _buildAppbar(context),
       body: Column(
@@ -32,6 +34,7 @@ class EventPage extends StatelessWidget {
           Navigator.pop(context);
         },
       ),
+      title: Text(event?.title ?? "Event") ,
     );
   }
 
@@ -42,7 +45,6 @@ class EventPage extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
-          // Bottom-most widget
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Image.network(
@@ -60,31 +62,24 @@ class EventPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  event?.title ?? "",
-                  style: const TextStyle(
-                    fontSize: 24,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
                       'Location: ${event?.locationName}',
                       style: const TextStyle(
-                        fontSize: 10,
+                        fontSize: 14,
                         color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       'Creator: ${event?.creator}',
                       style: const TextStyle(
-                        fontSize: 10,
+                        fontSize: 14,
                         color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
@@ -98,48 +93,137 @@ class EventPage extends StatelessWidget {
   }
 
   Widget _buildDescriptionSection() {
-    return Column(
-      children: [
-        const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Description',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Text(
+                'Description',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
+              const Spacer(),
+              IconButton(
+                icon: const Icon(Icons.favorite, color: Colors.redAccent),
+                onPressed: () {
+                  // Add your onPressed logic here
+                },
+              ),
+            ],
+          ),
+          const Divider(
+            color: Colors.grey,
+            indent: 3,
+            endIndent: 3,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            event?.detail ?? '',
+            style: const TextStyle(
+              fontSize: 16,
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(event?.detail ?? ""),
+          const SizedBox(height: 16),
+          ListTile(
+            leading: const Icon(Icons.date_range),
+            title: const Text(
+              'Start Date',
+              style: TextStyle(fontSize: 16),
+            ),
+            subtitle: Text(
+              _formatDate(event?.startDateTime),
+              style: const TextStyle(fontSize: 16),
+            ),
           ),
-        )
-      ],
+          ListTile(
+            leading: const Icon(Icons.date_range),
+            title: const Text(
+              'End Date',
+              style: TextStyle(fontSize: 16),
+            ),
+            subtitle: Text(
+              _formatDate(event?.endDateTime),
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildButtonSection(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Column(
         children: [
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text('Button 1'),
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text('Button 2'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Flexible(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    padding: const EdgeInsets.all(16),
+                  ),
+                  child: const Text(
+                    "Register",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white, // Text color
+                    ),
+                  ),
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return  Container(
+                            height: 200,
+                            color: Colors.amber,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  RegisterForm()
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(width: 15),
+              Flexible(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    padding: const EdgeInsets.all(16),
+                  ),
+                  child: const Text(
+                    "Navigate",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white, // Text color
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
+  }
+
+  String _formatDate(DateTime? dateTime) {
+    return dateTime != null ? DateFormat.yMMMMd().add_jm().format(dateTime) : '';
   }
 }

@@ -1,3 +1,4 @@
+import 'package:k_eventy/features/event/data/models/event.dart';
 import 'package:k_eventy/features/event/domain/entities/event.dart';
 
 abstract class RemoteEventsEvent {
