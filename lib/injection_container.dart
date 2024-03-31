@@ -1,6 +1,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:k_eventy/core/firebase/notification/firebase_api.dart';
 import 'package:k_eventy/features/event/data/data_sources/remote/event_api_service.dart';
 import 'package:k_eventy/features/event/data/repositories/event_repository_impl.dart';
 import 'package:k_eventy/features/event/domain/repositories/event_repository.dart';
@@ -20,6 +21,9 @@ Future<void> initializeDependencies() async {
   
   // Dio 
   sl.registerSingleton<Dio>(Dio());
+
+  // FireBase
+  sl.registerSingleton<FirebaseApi>(FirebaseApi());
   
   // Dependencies
   sl.registerSingleton<EventApiService>(EventApiService(sl()));
@@ -56,6 +60,6 @@ Future<void> initializeDependencies() async {
   );
 
   sl.registerFactory<RemoteAuthBloc>(
-    () => RemoteAuthBloc(sl(), sl())
+    () => RemoteAuthBloc(sl(), sl(), sl())
   );
 }

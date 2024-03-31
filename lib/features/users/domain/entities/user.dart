@@ -8,6 +8,7 @@ class UserEntity {
   final String ? email;
   final String ? imagePath;
   final File ? imageFile;
+  String? token;
 
   UserEntity({
     this.userId,
@@ -17,6 +18,7 @@ class UserEntity {
     this.email,
     this.imagePath,
     this.imageFile,
+    this.token
   });
 }
 

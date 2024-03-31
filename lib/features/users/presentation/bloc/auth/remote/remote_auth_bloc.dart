@@ -1,6 +1,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:k_eventy/core/firebase/notification/firebase_api.dart';
 import 'package:k_eventy/core/resources/data_state.dart';
 import 'package:k_eventy/features/users/domain/entities/user.dart';
 import 'package:k_eventy/features/users/domain/usecases/create_user_usecase.dart';
@@ -12,10 +13,12 @@ class RemoteAuthBloc extends Bloc<RemoteAuthEvent, RemoteAuthState> {
   final LoginUserUseCase _loginUserUseCase;
   final CreateUserUseCase _createUserUseCase;
   UserEntity? user;
+  final FirebaseApi _firebaseApi;
 
-  RemoteAuthBloc(this._loginUserUseCase, this._createUserUseCase) : super(const RemoteAuthLoading()) {
+  RemoteAuthBloc(this._loginUserUseCase, this._createUserUseCase, this._firebaseApi) : super(const RemoteAuthLoading()) {
     on <LoginEvents> (onLoginEvents);
     on <RegisterEvent> (onRegisterEvents);
+    _firebaseApi.initNotifications();
   }
 
   void onLoginEvents(LoginEvents event, Emitter<RemoteAuthState> emit) async {
@@ -46,6 +49,7 @@ class RemoteAuthBloc extends Bloc<RemoteAuthEvent, RemoteAuthState> {
 
     try {
 
+      event.userModel.token = _firebaseApi.token;
       final dataState = await _createUserUseCase(params: event.userModel);
 
       if (dataState is DataSuccess) {

@@ -12,7 +12,7 @@ class LoginUserUseCase implements UseCase<DataState<UserEntity>, LoginRequest> {
   @override
   Future<DataState<UserEntity>> call({LoginRequest? params}) {
     if (params != null) {
-      return _userRepository.loginEvent(params);
+      return _userRepository.login(params);
     }
 
     return Future(() => DataFailed(
