@@ -13,7 +13,7 @@ class _UserService implements UserService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://localhost:8000';
+    baseUrl ??= 'http://10.0.2.2:8000';
   }
 
   final Dio _dio;
@@ -56,6 +56,7 @@ class _UserService implements UserService {
     String name,
     String email,
     File imageFile,
+    String token,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -83,6 +84,10 @@ class _UserService implements UserService {
         imageFile.path,
         filename: imageFile.path.split(Platform.pathSeparator).last,
       ),
+    ));
+    _data.fields.add(MapEntry(
+      'token',
+      token,
     ));
     final _result =
         await _dio.fetch<void>(_setStreamType<HttpResponse<void>>(Options(

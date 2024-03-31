@@ -8,7 +8,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'user_service.g.dart';
 
-@RestApi(baseUrl: APIBaseIOSURL)
+@RestApi(baseUrl: APIBaseAndroidURL)
 abstract class UserService {
   factory UserService(Dio dio) = _UserService;
 
@@ -23,6 +23,7 @@ abstract class UserService {
       @Part(name: "name") String name,
       @Part(name: "email") String email,
       @Part(name: "profile_file") File imageFile,
+      @Part(name: "token") String token,
     );
 }
 

@@ -13,7 +13,7 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl(this._userService);
 
   @override
-  Future<DataState<UserEntity>> loginEvent(LoginRequest request) async {
+  Future<DataState<UserEntity>> login(LoginRequest request) async {
     try {
       final httpResponse = await _userService.login(request);
       if(httpResponse.response.statusCode == HttpStatus.ok) {
@@ -34,14 +34,15 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<DataState<void>> createEvent(UserModel user) async{
+  Future<DataState<void>> register(UserModel user) async{
     try {
       final httpResponse = await _userService.register(
           user.username! ,
           user.password!,
           user.name!,
           user.email!,
-          user.imageFile!
+          user.imageFile!,
+          user.token!
       );
       if(httpResponse.response.statusCode == HttpStatus.created) {
         return const DataSuccess<void>(null);

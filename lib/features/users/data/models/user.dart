@@ -10,6 +10,7 @@ class UserModel extends UserEntity {
     String? email,
     String? imagePath,
     File? imageFile,
+    String? token,
   }) : super(
     userId: userId,
     username: username,
@@ -18,6 +19,7 @@ class UserModel extends UserEntity {
     email: email,
     imagePath: imagePath,
     imageFile: imageFile,
+    token: token
   );
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -28,6 +30,7 @@ class UserModel extends UserEntity {
       email: json['email'] as String?,
       imagePath: json['profile_image'] as String?,
       imageFile: null, // Set imageFile to null when deserializing from JSON
+      token: json['token'] as String?,
     );
   }
 
@@ -38,6 +41,7 @@ class UserModel extends UserEntity {
       'name': name,
       'email': email,
       'profile_file': imageFile,
+      'token': token
     };
   }
 

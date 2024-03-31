@@ -4,16 +4,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:k_eventy/config/theme/app_themes.dart';
+import 'package:k_eventy/core/firebase/notification/firebase_api.dart';
 import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_bloc.dart';
 import 'package:k_eventy/features/users/presentation/bloc/auth/remote/remote_auth_bloc.dart';
 import 'package:k_eventy/features/users/presentation/pages/login_page.dart';
 import 'package:k_eventy/injection_container.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
+
   if(Platform.isAndroid) {
     AndroidGoogleMapsFlutter.useAndroidViewSurface = true;
   }
+
   WidgetsFlutterBinding.ensureInitialized();
+  // FIREBASE
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseApi().initNotifications();
+
+  // INJECTION
+
   await initializeDependencies();
   runApp(const MyApp());
 }
@@ -33,7 +46,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
+        // debugShowCheckedModeBanner: false,
         theme: theme(),
         home: LoginPage(),
       ),

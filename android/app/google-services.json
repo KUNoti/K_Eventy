@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "640772781317",
+    "project_id": "kunoti",
+    "storage_bucket": "kunoti.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640772781317:android:504dd682e3fc946870b36c",
+        "android_client_info": {
+          "package_name": "com.example.k_eventy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmvuPUnrngv4gsF0_2_3M-nGT5t338TTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

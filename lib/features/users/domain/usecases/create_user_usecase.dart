@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:k_eventy/core/resources/data_state.dart';
 import 'package:k_eventy/core/usecase/usecase.dart';
 import 'package:k_eventy/features/users/data/models/user.dart';
-import 'package:k_eventy/features/users/domain/entities/user.dart';
 import 'package:k_eventy/features/users/domain/repositories/user_repository.dart';
 
 class CreateUserUseCase implements UseCase<DataState<void>, UserModel> {
@@ -12,7 +11,7 @@ class CreateUserUseCase implements UseCase<DataState<void>, UserModel> {
   @override
   Future<DataState<void>> call({UserModel? params}) {
     if (params != null) {
-      return _userReposity.createEvent(params);
+      return _userReposity.register(params);
     }
 
     return Future(() => DataFailed(

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:k_eventy/core/constants/constants.dart';
-import 'package:k_eventy/features/event/data/models/event.dart';
 import 'package:k_eventy/features/event/domain/entities/event.dart';
 import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_bloc.dart';
 import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_event.dart';

@@ -13,7 +13,7 @@ class _EventApiService implements EventApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://localhost:8000';
+    baseUrl ??= 'http://10.0.2.2:8000';
   }
 
   final Dio _dio;
@@ -52,7 +52,7 @@ class _EventApiService implements EventApiService {
 
   @override
   Future<HttpResponse<void>> createEvent(
-    String username,
+    String title,
     num latitude,
     num longitude,
     String stateDate,
@@ -71,7 +71,7 @@ class _EventApiService implements EventApiService {
     final _data = FormData();
     _data.fields.add(MapEntry(
       'title',
-      username,
+      title,
     ));
     _data.fields.add(MapEntry(
       'latitude',

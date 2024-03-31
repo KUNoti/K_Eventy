@@ -7,7 +7,7 @@ import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 part 'event_api_service.g.dart';
 
-@RestApi(baseUrl: APIBaseIOSURL)
+@RestApi(baseUrl: APIBaseAndroidURL)
 abstract class EventApiService {
   factory EventApiService(Dio dio) = _EventApiService;
 
