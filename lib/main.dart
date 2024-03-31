@@ -10,9 +10,17 @@ import 'package:k_eventy/features/users/presentation/pages/login_page.dart';
 import 'package:k_eventy/injection_container.dart';
 
 Future<void> main() async {
+
   if(Platform.isAndroid) {
     AndroidGoogleMapsFlutter.useAndroidViewSurface = true;
   }
+
+  // FIREBASE
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+
+  // INJECTION
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDependencies();
   runApp(const MyApp());
