@@ -1,13 +1,20 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:k_eventy/core/constants/constants.dart';
+import 'package:k_eventy/features/event/data/models/event.dart';
+import 'package:k_eventy/features/event/domain/entities/event.dart';
+import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_bloc.dart';
+import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_event.dart';
+import 'package:k_eventy/features/event/presentation/widgets/map/place_picker/entities/location_result.dart';
+import 'package:k_eventy/features/event/presentation/widgets/map/place_picker/place_picker.dart';
+import 'package:k_eventy/features/users/presentation/bloc/auth/remote/remote_auth_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CreateEventDialog extends StatefulWidget {
-  const CreateEventDialog({super.key});
+  const CreateEventDialog({Key? key}) : super(key: key);
 
   @override
   _CreateEventDialogState createState() => _CreateEventDialogState();
@@ -17,11 +24,13 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _detailController = TextEditingController();
   final TextEditingController _locationNameController = TextEditingController();
-  XFile? _image;
+  File? _image;
   DateTime _selectedStartDate = DateTime.now();
   TimeOfDay _selectedStartTime = TimeOfDay.now();
   DateTime _selectedEndDate = DateTime.now();
   TimeOfDay _selectedEndTime = TimeOfDay.now();
+  num? lat;
+  num? long;
 
   @override
   void dispose() {
@@ -34,13 +43,37 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   //image
   final ImagePicker _picker = ImagePicker();
 
+  void createEvents(BuildContext context) {
+    final RemoteAuthBloc remoteAuthBloc = BlocProvider.of<RemoteAuthBloc>(context);
+
+    final user = remoteAuthBloc.user;
+
+    if(user != null) {
+      EventEntity event = EventEntity(
+          title: _titleController.text,
+          latitude: lat,
+          longitude: long,
+          startDateTime: combineDateTime(_selectedStartDate, _selectedStartTime),
+          endDateTime: combineDateTime(_selectedEndDate, _selectedEndTime),
+          price: 0.0,
+          imageFile: _image,
+          creator: user.userId, // userId
+          detail: _detailController.text,
+          locationName: _locationNameController.text,
+          needRegis: false,
+          tag: "KU"
+      );
+      BlocProvider.of<RemoteEventsBloc>(context).add(CreateEvent(event));
+    }
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // _previewImages(),
           _buildHeader(context),
           const Divider(
             height: 1,
@@ -71,6 +104,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                         labelText: 'Location Name',
                       ),
                     ),
+                    _buildPlacePicker()
                   ],
                 ),
               ),
@@ -114,9 +148,9 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
         child: ElevatedButton(
           onPressed: () {
             // Save the event or perform other actions here
-            Navigator.of(context).pop();
+            createEvents(context);
           },
-          child: const Text('Save'),
+          child: const Text('Create'),
         ),
       ),
     );
@@ -286,8 +320,12 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
           return;
         }
 
-        _image = await _picker.pickImage(source: source);
-        setState(() {});
+        XFile? pickedFile = await _picker.pickImage(source: source);
+        if (pickedFile != null) {
+          setState(() {
+            _image = File(pickedFile!.path);
+        });
+    }
   }
 
   Future<void> _selectStartDate(BuildContext context) async {
@@ -340,5 +378,35 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
         _selectedEndTime = picked;
       });
     }
+  }
+
+  Widget _buildPlacePicker() {
+    return Center(
+      child: ElevatedButton(
+        onPressed: ()  {
+          showPlacePicker();
+        },
+        child: const Text("Pick Location"),
+      ),
+    );
+  }
+
+  void showPlacePicker() async {
+    LocationResult? result = await Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => PlacePicker("AIzaSyAU4HJKQ5Yor8aQNY8c8fHzMDbZnEEB0xs")));
+
+    _locationNameController.text = result?.name ?? "name";
+    lat = result?.latLng?.latitude ?? 13.8476;
+    long = result?.latLng?.longitude ?? 100.5696;
+  }
+
+  DateTime combineDateTime(DateTime date, TimeOfDay timeOfDay) {
+    return DateTime(
+      date.year,
+      date.month,
+      date.day,
+      timeOfDay.hour,
+      timeOfDay.minute,
+    );
   }
 }

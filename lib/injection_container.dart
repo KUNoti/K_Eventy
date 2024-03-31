@@ -30,7 +30,7 @@ Future<void> initializeDependencies() async {
   );
 
   sl.registerSingleton<UserRepository>(
-      UserRepositoryImpl(sl())
+    UserRepositoryImpl(sl())
   );
 
   // UseCases
@@ -38,15 +38,15 @@ Future<void> initializeDependencies() async {
     GetEventsUseCase(sl())
   );
 
-  sl.registerSingleton(
+  sl.registerSingleton<CreateEventUseCase>(
     CreateEventUseCase(sl())
   );
 
-  sl.registerSingleton(
+  sl.registerSingleton<CreateUserUseCase>(
     CreateUserUseCase(sl())
   );
 
-  sl.registerSingleton(
+  sl.registerSingleton<LoginUserUseCase>(
     LoginUserUseCase(sl())
   );
 

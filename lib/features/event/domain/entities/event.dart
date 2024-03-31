@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
+import 'package:k_eventy/features/event/data/models/event.dart';
 
 class EventEntity extends Equatable {
   final String ? title;
@@ -8,6 +11,7 @@ class EventEntity extends Equatable {
   final DateTime ? endDateTime;
   final num ? price;
   final String ? image;
+  final File ? imageFile;
   final int ? creator;
   final String ? detail;
   final String ? tag;
@@ -22,6 +26,7 @@ class EventEntity extends Equatable {
     this.endDateTime,
     this.price,
     this.image,
+    this.imageFile,
     this.creator,
     this.detail,
     this.tag,
@@ -39,6 +44,7 @@ class EventEntity extends Equatable {
       endDateTime,
       price,
       image,
+      imageFile,
       creator,
       detail,
       tag,
