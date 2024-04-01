@@ -1,8 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:k_eventy/core/constants/constants.dart';
 import 'package:k_eventy/features/event/data/models/event.dart';
+import 'package:k_eventy/features/event/data/request/follow_request.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 part 'event_api_service.g.dart';
@@ -29,5 +29,10 @@ abstract class EventApiService {
       @Part(name: "need_regis") bool needRegis,
       @Part(name: "image_file") File imageFile,
       @Part(name: "tag") String tag,
+  );
+
+  @POST('/api/event/follow')
+  Future<HttpResponse<void>> followEvent(
+      @Body() FollowRequest request
   );
 }

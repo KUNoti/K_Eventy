@@ -6,6 +6,7 @@ import 'package:k_eventy/features/event/data/data_sources/remote/event_api_servi
 import 'package:k_eventy/features/event/data/repositories/event_repository_impl.dart';
 import 'package:k_eventy/features/event/domain/repositories/event_repository.dart';
 import 'package:k_eventy/features/event/domain/usecases/create_event_usecase.dart';
+import 'package:k_eventy/features/event/domain/usecases/follow_event_usecase.dart';
 import 'package:k_eventy/features/event/domain/usecases/get_events_usecase.dart';
 import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_bloc.dart';
 import 'package:k_eventy/features/users/data/data_sources/remote/user_service.dart';
@@ -46,6 +47,10 @@ Future<void> initializeDependencies() async {
     CreateEventUseCase(sl())
   );
 
+  sl.registerSingleton<FollowEventUseCase>(
+    FollowEventUseCase(sl())
+  );
+
   sl.registerSingleton<CreateUserUseCase>(
     CreateUserUseCase(sl())
   );
@@ -56,7 +61,7 @@ Future<void> initializeDependencies() async {
 
   // Bloc
   sl.registerFactory<RemoteEventsBloc>(
-    () => RemoteEventsBloc(sl(), sl())
+    () => RemoteEventsBloc(sl(), sl(), sl())
   );
 
   sl.registerFactory<RemoteAuthBloc>(
