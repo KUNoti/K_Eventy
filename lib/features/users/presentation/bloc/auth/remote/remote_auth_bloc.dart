@@ -22,14 +22,10 @@ class RemoteAuthBloc extends Bloc<RemoteAuthEvent, RemoteAuthState> {
   }
 
   void onLoginEvents(LoginEvents event, Emitter<RemoteAuthState> emit) async {
-    print("login");
     try {
-      print("login 1");
       final dataState = await _loginUserUseCase(params: event.toLoginRequest());
-      print("login 1");
       if (dataState is DataSuccess) {
         user = dataState.data;
-        print(user.toString());
         emit(
           RemoteAuthDone(dataState.data!)
         );
