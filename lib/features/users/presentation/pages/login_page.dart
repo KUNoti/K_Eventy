@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,106 +48,125 @@ class LoginPage extends StatelessWidget {
               }
 
               if (state is RemoteAuthError) {
-                if (kDebugMode) {
-                  print("error login ${state.exception}");
-                }
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Error: ${state.exception.toString()}'),
+                  ),
+                );
               }
             },
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 50),
-              
-                  // logo
-                  const Icon(
-                    Icons.android,
-                    size: 100,
-                  ),
-              
-                  const SizedBox(height: 50),
-              
-                  // welcome back, you've been missed!
-                  Text(
-                    'Welcome back you\'ve been missed!',
-                    style: TextStyle(
-                      color: Colors.grey[700],
-                      fontSize: 16,
-                    ),
-                  ),
-              
-                  const SizedBox(height: 25),
-              
-                  // username text field
-                  MyTextField(
-                    controller: usernameController,
-                    hintText: 'Username',
-                    obscureText: false,
-                  ),
-              
-                  const SizedBox(height: 10),
-              
-                  // password text field
-                  MyTextField(
-                    controller: passwordController,
-                    hintText: 'Password',
-                    obscureText: true,
-                  ),
-              
-                  const SizedBox(height: 25),
-              
-                  // sign in button
-                  MyButton(
-                    onTap: () => signUserIn(context),
-                    text: 'Sign in',
-                  ),
-              
-                  const SizedBox(height: 25),
-              
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                        Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-              
-                  const SizedBox(height: 25),
-                  // not a member? register now
-                  Row(
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Not a member?',
-                        style: TextStyle(color: Colors.grey[700]),
+                      const SizedBox(height: 50),
+
+                      // logo
+                      const Icon(
+                        Icons.android,
+                        size: 100,
                       ),
-                      const SizedBox(width: 4),
-                      GestureDetector(
-                        onTap: () => navigateToRegisterPage(context),
-                        child: const Text(
-                          'Register now',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          ),
+
+                      const SizedBox(height: 50),
+
+                      // welcome back, you've been missed!
+                      Text(
+                        'Welcome back you\'ve been missed!',
+                        style: TextStyle(
+                          color: Colors.grey[700],
+                          fontSize: 16,
                         ),
                       ),
+
+                      const SizedBox(height: 25),
+
+                      // username text field
+                      MyTextField(
+                        controller: usernameController,
+                        hintText: 'Username',
+                        obscureText: false,
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // password text field
+                      MyTextField(
+                        controller: passwordController,
+                        hintText: 'Password',
+                        obscureText: true,
+                      ),
+
+                      const SizedBox(height: 25),
+
+                      // sign in button
+                      MyButton(
+                        onTap: () => signUserIn(context),
+                        text: 'Sign in',
+                      ),
+
+                      const SizedBox(height: 25),
+
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Divider(
+                                thickness: 0.5,
+                                color: Colors.grey[400],
+                              ),
+                            ),
+                            Expanded(
+                              child: Divider(
+                                thickness: 0.5,
+                                color: Colors.grey[400],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 25),
+                      // not a member? register now
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Not a member?',
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
+                          const SizedBox(width: 4),
+                          GestureDetector(
+                            onTap: () => navigateToRegisterPage(context),
+                            child: const Text(
+                              'Register now',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
                     ],
-                  )
-                ],
-              ),
+                  ),
+                ),
+                BlocBuilder<RemoteAuthBloc, RemoteAuthState>(
+                  builder: (context, state) {
+                    if (state is RemoteAuthLoading) {
+                      return Container(
+                        color: Colors.black.withOpacity(0.2),
+                        child: const Center(
+                          child: CupertinoActivityIndicator(),
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                )
+              ]
             ),
           ),
         ),

@@ -15,19 +15,20 @@ class RemoteAuthBloc extends Bloc<RemoteAuthEvent, RemoteAuthState> {
   UserEntity? user;
   final FirebaseApi _firebaseApi;
 
-  RemoteAuthBloc(this._loginUserUseCase, this._createUserUseCase, this._firebaseApi) : super(const RemoteAuthLoading()) {
+  RemoteAuthBloc(this._loginUserUseCase, this._createUserUseCase, this._firebaseApi) : super(const RemoteAuthInit()) {
     on <LoginEvents> (onLoginEvents);
     on <RegisterEvent> (onRegisterEvents);
     _firebaseApi.initNotifications();
   }
 
   void onLoginEvents(LoginEvents event, Emitter<RemoteAuthState> emit) async {
+    emit(const RemoteAuthLoading());
     try {
       final dataState = await _loginUserUseCase(params: event.toLoginRequest());
       if (dataState is DataSuccess) {
         user = dataState.data;
         emit(
-          RemoteAuthDone(dataState.data!)
+          const RemoteAuthDone()
         );
       } else if (dataState is DataFailed) {
         emit(
@@ -42,16 +43,14 @@ class RemoteAuthBloc extends Bloc<RemoteAuthEvent, RemoteAuthState> {
   }
 
   void onRegisterEvents(RegisterEvent event, Emitter<RemoteAuthState> emit) async {
-
+    emit(const RemoteAuthLoading());
     try {
-
       event.userModel.token = _firebaseApi.token;
       final dataState = await _createUserUseCase(params: event.userModel);
 
       if (dataState is DataSuccess) {
-        user = dataState.data;
         emit(
-            RemoteAuthDone(dataState.data!)
+            const RemoteAuthDone()
         );
       } else if (dataState is DataFailed) {
         emit(

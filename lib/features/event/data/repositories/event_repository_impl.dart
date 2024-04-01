@@ -17,7 +17,6 @@ class EventRepositoryImpl implements EventRepository {
   Future<DataState<void>> createEvent(EventEntity event) async {
     try {
       EventModel eventModel = EventModel.fromEntity(event);
-      print(eventModel.startDateTime!.toIso8601String());
       final httpResponse = await _eventApiService.createEvent(
         eventModel.title!,
         eventModel.latitude!,
@@ -76,6 +75,27 @@ class EventRepositoryImpl implements EventRepository {
   Future<DataState<void>> followEvent(FollowRequest request) async {
     try {
       final httpResponse = await _eventApiService.followEvent(request);
+      if(httpResponse.response.statusCode == HttpStatus.ok) {
+        return const DataSuccess<void>(null);
+      } else {
+        return DataFailed(
+            DioException(
+                error: httpResponse.response.statusMessage,
+                response: httpResponse.response,
+                type: DioExceptionType.badResponse,
+                requestOptions: httpResponse.response.requestOptions
+            )
+        );
+      }
+    } on DioException catch(e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<void>> unFollowEvent(FollowRequest request) async {
+    try {
+      final httpResponse = await _eventApiService.unFollowEvent(request);
       if(httpResponse.response.statusCode == HttpStatus.ok) {
         return const DataSuccess<void>(null);
       } else {

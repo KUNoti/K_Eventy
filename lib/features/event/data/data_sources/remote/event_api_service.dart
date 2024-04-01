@@ -35,4 +35,9 @@ abstract class EventApiService {
   Future<HttpResponse<void>> followEvent(
       @Body() FollowRequest request
   );
+
+  @DELETE('/api/event/unfollow')
+  Future<HttpResponse<void>> unFollowEvent(
+      @Body() FollowRequest request
+  );
 }

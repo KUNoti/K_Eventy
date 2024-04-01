@@ -26,3 +26,15 @@ extension FollowEventExtension on FollowEvent {
   }
 }
 
+class UnFollowEvent extends RemoteEventsEvent {
+  final int userId;
+  final int eventId;
+  const UnFollowEvent(this.userId, this.eventId);
+}
+
+extension UnFollowEventExtension on UnFollowEvent {
+  FollowRequest toFollowRequest() {
+    return FollowRequest(userId, eventId);
+  }
+}
+

@@ -66,6 +66,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
           tag: "KU"
       );
       BlocProvider.of<RemoteEventsBloc>(context).add(CreateEvent(event));
+      BlocProvider.of<RemoteEventsBloc>(context).add(const GetEvents());
     }
     Navigator.of(context).pop();
   }
