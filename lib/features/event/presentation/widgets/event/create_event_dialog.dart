@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +8,7 @@ import 'package:k_eventy/core/constants/constants.dart';
 import 'package:k_eventy/features/event/domain/entities/event.dart';
 import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_bloc.dart';
 import 'package:k_eventy/features/event/presentation/bloc/event/remote/remote_event_event.dart';
+import 'package:k_eventy/features/event/presentation/widgets/event/tag_picker.dart';
 import 'package:k_eventy/features/event/presentation/widgets/map/place_picker/entities/location_result.dart';
 import 'package:k_eventy/features/event/presentation/widgets/map/place_picker/place_picker.dart';
 import 'package:k_eventy/features/users/presentation/bloc/auth/remote/remote_auth_bloc.dart';
@@ -30,6 +32,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   TimeOfDay _selectedEndTime = TimeOfDay.now();
   num? lat;
   num? long;
+  String? selectedTag;
 
   @override
   void dispose() {
@@ -63,6 +66,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
           tag: "KU"
       );
       BlocProvider.of<RemoteEventsBloc>(context).add(CreateEvent(event));
+      BlocProvider.of<RemoteEventsBloc>(context).add(const GetEvents());
     }
     Navigator.of(context).pop();
   }
@@ -97,12 +101,19 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     // Date Selector,
                     _buildDateSelector(context),
                     const SizedBox(height: 10),
+                    TagPicker(
+                      onTagSelected: (tag) {
+                        selectedTag = tag;
+                      },
+                    ),
+                    const SizedBox(height: 10),
                     TextField(
                       controller: _locationNameController,
                       decoration: const InputDecoration(
                         labelText: 'Location Name',
                       ),
                     ),
+                    const SizedBox(height: 10),
                     _buildPlacePicker()
                   ],
                 ),

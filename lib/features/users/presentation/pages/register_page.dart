@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:k_eventy/features/event/presentation/widgets/common/my_button.dart';
@@ -70,69 +72,55 @@ class _RegisterPageState extends State<RegisterPage> {
           child: BlocListener<RemoteAuthBloc, RemoteAuthState>(
             listener: (context, state) {
               if (state is RemoteAuthDone) {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage())
-                );
+                Navigator.pop(context);
               }
 
               if (state is RemoteAuthError) {
-                if (kDebugMode) {
-                  print("error Register");
-                }
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Error: ${state.exception.toString()}'),
+                  ),
+                );
               }
             },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildImageView(),
-                const SizedBox(height: 25),
-
-                // username textfield
-                MyTextField(
-                  controller: usernameController,
-                  hintText: 'Username',
-                  obscureText: false,
+            child: Stack(
+              children:[
+                SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildImageView(),
+                      const SizedBox(height: 25),
+                  
+                      _buildForm(context),
+                  
+                      const SizedBox(height: 25),
+                  
+                      // sign in button
+                      MyButton(
+                        onTap: () {
+                          register();
+                        },
+                        text: 'Register',
+                      ),
+                      const SizedBox(height: 25),
+                    ],
+                  ),
                 ),
-
-                const SizedBox(height: 10),
-
-                // password textfield
-                MyTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
-                ),
-
-                const SizedBox(height: 10),
-
-                // Name textfield
-                MyTextField(
-                  controller: nameController,
-                  hintText: 'Name',
-                  obscureText: false,
-                ),
-
-                const SizedBox(height: 10),
-
-                // Name textfield
-                MyTextField(
-                  controller: emailController,
-                  hintText: 'Email',
-                  obscureText: false,
-                ),
-
-                const SizedBox(height: 25),
-
-                // sign in button
-                MyButton(
-                  onTap: () {
-                    register();
+                BlocBuilder<RemoteAuthBloc, RemoteAuthState>(
+                  builder: (context, state) {
+                    if (state is RemoteAuthLoading) {
+                      return Container(
+                        color: Colors.black.withOpacity(0.2),
+                        child: const Center(
+                          child: CupertinoActivityIndicator(),
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
                   },
-                  text: 'Register',
-                ),
-                const SizedBox(height: 25),
-              ],
+                )
+              ]
             ),
           ),
         ),
@@ -158,7 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: Colors.purple,
+                  color: Colors.black87,
                   width: 2,
                 ),
               ),
@@ -203,5 +191,63 @@ class _RegisterPageState extends State<RegisterPage> {
         _image = File(_pickedFile!.path);
       });
     }
+  }
+
+  Widget _buildForm(BuildContext context) {
+    return Form(
+        child: Column(
+          children: [
+            MyTextField(
+              controller: usernameController,
+              hintText: 'Username',
+              obscureText: false,
+              validator: (value) {
+                if(value == null || value.isEmpty) {
+                  return 'Please enter a username';
+                }
+              },
+            ),
+
+            const SizedBox(height: 10),
+
+            MyTextField(
+              controller: passwordController,
+              hintText: 'Password',
+              obscureText: true,
+              validator: (value) {
+                if(value == null || value.isEmpty) {
+                  return 'Please enter a password';
+                }
+              },
+            ),
+
+            const SizedBox(height: 10),
+
+            MyTextField(
+              controller: nameController,
+              hintText: 'Name',
+              obscureText: false,
+              validator: (value) {
+                if(value == null || value.isEmpty) {
+                  return 'Please enter a name';
+                }
+              },
+            ),
+
+            const SizedBox(height: 10),
+
+            MyTextField(
+              controller: emailController,
+              hintText: 'Email',
+              obscureText: false,
+              validator: (value) {
+                if(value == null || value.isEmpty) {
+                  return 'Please enter a email';
+                }
+              },
+            ),
+          ],
+        )
+    );
   }
 }

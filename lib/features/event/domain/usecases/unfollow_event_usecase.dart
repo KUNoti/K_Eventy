@@ -1,26 +1,25 @@
-
 import 'package:dio/dio.dart';
 import 'package:k_eventy/core/resources/data_state.dart';
 import 'package:k_eventy/core/usecase/usecase.dart';
-import 'package:k_eventy/features/event/domain/entities/event.dart';
+import 'package:k_eventy/features/event/data/request/follow_request.dart';
 import 'package:k_eventy/features/event/domain/repositories/event_repository.dart';
 
-class CreateEventUseCase implements UseCase<DataState<void>, EventEntity> {
+class UnFollowEventUseCase implements UseCase<DataState<void>, FollowRequest> {
   final EventRepository _eventRepository;
-  CreateEventUseCase(this._eventRepository);
+  UnFollowEventUseCase(this._eventRepository);
 
   @override
-  Future<DataState<void>> call({EventEntity? params}) {
+  Future<DataState<void>> call({FollowRequest? params}) {
     if (params == null) {
       return Future(() => DataFailed(
           DioException(
               requestOptions: RequestOptions(
-                data: "eventEntity is null"
+                  data: "request is null"
               )
           )
       ));
     }
 
-    return _eventRepository.createEvent(params);
+    return _eventRepository.unFollowEvent(params);
   }
 }
